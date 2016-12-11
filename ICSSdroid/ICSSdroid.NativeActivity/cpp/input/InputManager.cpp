@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "InputManager.h"
+#include "input/InputManager.h"
 
-using namespace ICSS;
+using namespace ICSS::input;
 
 void InputManager::handleInput(AInputEvent * event)
 {

@@ -1,13 +1,13 @@
 #pragma once
 #include "pch.h"
-#include "Thread.h"
-#include "IDisposable.h"
+#include "util/threading/Thread.h"
+#include "util/basic/IDisposable.h"
 
 namespace ICSS {
-	namespace Frame {
+	namespace android {
 		class GlueHandler : public IDisposable {
 			android_app *m_glue;
-			Thread m_thGraph;
+			threading::Thread m_thGraph;
 
 		public:
 			GlueHandler(android_app *app);

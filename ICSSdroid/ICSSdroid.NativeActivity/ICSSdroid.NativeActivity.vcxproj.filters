@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="include\android\android_native_app_glue.h">
+      <Filter>Headers\android</Filter>
+    </ClInclude>
+    <ClInclude Include="include\android\GlueHandler.h">
+      <Filter>Headers\android</Filter>
+    </ClInclude>
+    <ClInclude Include="include\game\scene\SceneManager.h">
+      <Filter>Headers\game\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\GLEnvironment.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\input\InputManager.h">
+      <Filter>Headers\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\input\InputParam.h">
+      <Filter>Headers\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\input\touch\MotionFinger.h">
+      <Filter>Headers\input\touch</Filter>
+    </ClInclude>
+    <ClInclude Include="include\input\touch\TouchSensor.h">
+      <Filter>Headers\input\touch</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\basic\IDisposable.h">
+      <Filter>Headers\util\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\basic\Singleton.h">
+      <Filter>Headers\util\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\threading\LockFreeQueue.h">
+      <Filter>Headers\util\threading</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\threading\Thread.h">
+      <Filter>Headers\util\threading</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cpp\android\android_native_app_glue.c">
+      <Filter>Sources\android</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\android\GlueHandler.cpp">
+      <Filter>Sources\android</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\input\InputManager.cpp">
+      <Filter>Sources\input</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\input\touch\MotionFinger.cpp">
+      <Filter>Sources\input\touch</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\main.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{20975c09-9558-4a0b-bf42-25326ee3a5a0}</UniqueIdentifier>
+      <Extensions>*.h</Extensions>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{c51ddc31-70c1-46f9-a548-6120dafd1257}</UniqueIdentifier>
+      <Extensions>*.cpp</Extensions>
+    </Filter>
+    <Filter Include="Headers\android">
+      <UniqueIdentifier>{b5396b3c-6cfe-40a2-9150-352c666622c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\game">
+      <UniqueIdentifier>{394db2f5-7527-4f7f-905a-dcb29b4e7e62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\game\scene">
+      <UniqueIdentifier>{1a183a1f-a444-4f89-853e-dbcd8224e039}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\graphics">
+      <UniqueIdentifier>{c5ac598d-8a77-4f7a-8cdd-f3e998f1c98c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\input">
+      <UniqueIdentifier>{cdda1152-b53f-4553-8a80-505df95008aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\util">
+      <UniqueIdentifier>{7341d0ab-ba42-4ac8-9174-7bbabb8822a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\input\touch">
+      <UniqueIdentifier>{4a90a523-496f-4a07-a808-886e01893d38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\util\basic">
+      <UniqueIdentifier>{83fae98b-628f-43ef-889d-f27dd2474b95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\util\threading">
+      <UniqueIdentifier>{aa6af668-8ab5-4d81-81ee-6fe66033f816}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\android">
+      <UniqueIdentifier>{9e12bf47-b194-4500-bd42-72200bade78e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\game">
+      <UniqueIdentifier>{308fb4b4-3ed4-47d7-9290-92848b8fcacd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\game\scene">
+      <UniqueIdentifier>{9e299d2c-95e1-4718-be94-5d0f0475b433}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\graphics">
+      <UniqueIdentifier>{7d3a93a2-20d3-46e7-ab70-d3e1d54356e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\input">
+      <UniqueIdentifier>{02e19a4e-1c84-4e04-bc31-9c082b534905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\util">
+      <UniqueIdentifier>{3e5ef1d9-8eb2-4a1f-98a9-ee0418939d96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\input\touch">
+      <UniqueIdentifier>{230f81e8-e937-4b76-9340-b88525bc3661}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\util\basic">
+      <UniqueIdentifier>{b3ffa5cb-bbfe-4d1e-a7eb-080eafe49e0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\util\threading">
+      <UniqueIdentifier>{fef43c6b-8a2e-47a5-bcb0-57dff468ea1e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

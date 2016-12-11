@@ -1,11 +1,12 @@
 #include <android/log.h>
-#include "android_native_app_glue.h"
 #include <memory>
 #include <string>
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
-#include "GLEnvironment.h"
-#include "Thread.h"
+
+#include "android/android_native_app_glue.h"
+#include "graphics/GLEnvironment.h"
+#include "util/threading/Thread.h"
 
 template<typename FunGetIv, typename FunGetLog>
 std::string getGLLogStr(GLuint obj, FunGetIv funGetIv, FunGetLog funGetLog)
@@ -157,7 +158,7 @@ private:
 	}
 };
 
-static void testThread(ICSS::Thread *thr) {
+static void testThread(ICSS::threading::Thread *thr) {
 	//while(1) {
 		if(thr->isTerminating())
 			return;
@@ -207,7 +208,7 @@ private:
 			// Window
 			case APP_CMD_INIT_WINDOW:
 			{
-				ICSS::Thread th(testThread, nullptr);
+				ICSS::threading::Thread th(testThread, nullptr);
 				LOGI("handleCmd(APP_CMD_INIT_WINDOW)");
 				// The window is being shown, get it ready.
 				if (app_->window) {

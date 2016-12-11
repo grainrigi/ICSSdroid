@@ -147,9 +147,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>include/pch.h</PrecompiledHeaderFile>
       <CompileAs>CompileAsCpp</CompileAs>
       <CppLanguageStandard>c++11</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>%(LibraryDependencies);GLESv1_CM;EGL;GLESv2;m</LibraryDependencies>
@@ -158,9 +159,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>include/pch.h</PrecompiledHeaderFile>
       <CompileAs>CompileAsCpp</CompileAs>
       <CppLanguageStandard>c++11</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>%(LibraryDependencies);GLESv1_CM;EGL;GLESv2;m</LibraryDependencies>
@@ -191,9 +193,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>include/pch.h</PrecompiledHeaderFile>
       <CompileAs>CompileAsCpp</CompileAs>
       <CppLanguageStandard>c++11</CppLanguageStandard>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>%(LibraryDependencies);GLESv1_CM;EGL;GLESv2;m</LibraryDependencies>
@@ -202,35 +205,36 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>include/pch.h</PrecompiledHeaderFile>
       <CompileAs>CompileAsCpp</CompileAs>
       <CppLanguageStandard>c++11</CppLanguageStandard>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>%(LibraryDependencies);GLESv1_CM;EGL;GLESv2;m</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GLEnvironment.h" />
-    <ClInclude Include="GlueHandler.h" />
-    <ClInclude Include="IDisposable.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="InputParam.h" />
-    <ClInclude Include="LockFreeQueue.h" />
-    <ClInclude Include="MotionFinger.h" />
+    <ClInclude Include="include\android\android_native_app_glue.h" />
+    <ClInclude Include="include\android\GlueHandler.h" />
+    <ClInclude Include="include\game\scene\SceneManager.h" />
+    <ClInclude Include="include\graphics\GLEnvironment.h" />
+    <ClInclude Include="include\input\InputManager.h" />
+    <ClInclude Include="include\input\InputParam.h" />
+    <ClInclude Include="include\input\touch\MotionFinger.h" />
+    <ClInclude Include="include\input\touch\TouchSensor.h" />
+    <ClInclude Include="include\util\basic\IDisposable.h" />
+    <ClInclude Include="include\util\basic\Singleton.h" />
+    <ClInclude Include="include\util\threading\LockFreeQueue.h" />
+    <ClInclude Include="include\util\threading\Thread.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="android_native_app_glue.h" />
-    <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="Singleton.h" />
-    <ClInclude Include="Thread.h" />
-    <ClInclude Include="TouchSensor.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="android_native_app_glue.c" />
-    <ClCompile Include="GlueHandler.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MotionFinger.cpp" />
+    <ClCompile Include="cpp\android\android_native_app_glue.c" />
+    <ClCompile Include="cpp\android\GlueHandler.cpp" />
+    <ClCompile Include="cpp\input\InputManager.cpp" />
+    <ClCompile Include="cpp\input\touch\MotionFinger.cpp" />
+    <ClCompile Include="cpp\main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

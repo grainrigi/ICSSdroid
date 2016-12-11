@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "MotionFinger.h"
+#include "input/touch/MotionFinger.h"
 
-using namespace ICSS;
+using namespace ICSS::input::touch;
 
 MotionFinger::MotionFinger(void)
 {

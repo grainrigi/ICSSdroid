@@ -1,8 +1,11 @@
 #include "pch.h"
-#include "GlueHandler.h"
-#include "InputManager.h"
+#include "android/GlueHandler.h"
 
-using namespace ICSS::Frame;
+#include "input/InputManager.h"
+#include "util/basic/Singleton.h"
+
+using namespace ICSS::android;
+using ICSS::input::InputManager;
 
 GlueHandler::GlueHandler(android_app *app) : m_glue(app)
 {
