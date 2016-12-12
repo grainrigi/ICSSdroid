@@ -31,13 +31,22 @@
     <ClInclude Include="include\util\basic\Singleton.h">
       <Filter>Headers\util\basic</Filter>
     </ClInclude>
-    <ClInclude Include="include\util\threading\LockFreeQueue.h">
-      <Filter>Headers\util\threading</Filter>
-    </ClInclude>
     <ClInclude Include="include\util\threading\Thread.h">
       <Filter>Headers\util\threading</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="include\util\threading\IQueueReader.h">
+      <Filter>Headers\util\threading</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\threading\IQueueWriter.h">
+      <Filter>Headers\util\threading</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\threading\LockFreeQueue32.h">
+      <Filter>Headers\util\threading</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\threading\LockFreeQueue8.h">
+      <Filter>Headers\util\threading</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pch.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="cpp\main.cpp">
       <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\input\touch\TouchSensor.cpp">
+      <Filter>Sources\input\touch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

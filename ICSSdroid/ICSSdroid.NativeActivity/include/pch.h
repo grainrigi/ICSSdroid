@@ -32,6 +32,9 @@
 #include <exception>
 #include <memory>
 #include <unordered_map>
+#include <atomic>
+#include <mutex>
+#include <algorithm>
 
 #define DO_LOG
 

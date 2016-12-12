@@ -223,17 +223,21 @@
     <ClInclude Include="include\input\InputParam.h" />
     <ClInclude Include="include\input\touch\MotionFinger.h" />
     <ClInclude Include="include\input\touch\TouchSensor.h" />
+    <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\util\basic\IDisposable.h" />
     <ClInclude Include="include\util\basic\Singleton.h" />
-    <ClInclude Include="include\util\threading\LockFreeQueue.h" />
+    <ClInclude Include="include\util\threading\IQueueReader.h" />
+    <ClInclude Include="include\util\threading\IQueueWriter.h" />
+    <ClInclude Include="include\util\threading\LockFreeQueue32.h" />
+    <ClInclude Include="include\util\threading\LockFreeQueue8.h" />
     <ClInclude Include="include\util\threading\Thread.h" />
-    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\android\android_native_app_glue.c" />
     <ClCompile Include="cpp\android\GlueHandler.cpp" />
     <ClCompile Include="cpp\input\InputManager.cpp" />
     <ClCompile Include="cpp\input\touch\MotionFinger.cpp" />
+    <ClCompile Include="cpp\input\touch\TouchSensor.cpp" />
     <ClCompile Include="cpp\main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
