@@ -1,6 +1,7 @@
 #pragma once
 
 #include "util/threading/IQueueWriter.h"
+#include "TouchNotifyParam.h"
 
 
 namespace ICSS {
@@ -8,11 +9,7 @@ namespace input{
 	class InputManager;
 namespace touch{
 
-	struct TouchNotifyParam {
-		int type;
-		int32_t x;
-		int32_t y;
-	};
+	
 
 	class TouchSensor {
 		friend class ICSS::input::InputManager;
@@ -27,9 +24,9 @@ namespace touch{
 		};
 
 		enum {
-			EVENT_DOWN = 1,
-			EVENT_UP = 2,
-			EVENT_MOVE = 3,
+			ACTION_DOWN = 1,
+			ACTION_UP = 2,
+			ACTION_CANCEL = 3,
 		};
 
 	private:

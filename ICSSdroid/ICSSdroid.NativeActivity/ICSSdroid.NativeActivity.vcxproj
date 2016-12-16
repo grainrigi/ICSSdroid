@@ -221,7 +221,7 @@
     <ClInclude Include="include\graphics\GLEnvironment.h" />
     <ClInclude Include="include\input\InputManager.h" />
     <ClInclude Include="include\input\InputParam.h" />
-    <ClInclude Include="include\input\touch\MotionFinger.h" />
+    <ClInclude Include="include\input\touch\TouchNotifyParam.h" />
     <ClInclude Include="include\input\touch\TouchSensor.h" />
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\util\basic\IDisposable.h" />
@@ -236,7 +236,6 @@
     <ClCompile Include="cpp\android\android_native_app_glue.c" />
     <ClCompile Include="cpp\android\GlueHandler.cpp" />
     <ClCompile Include="cpp\input\InputManager.cpp" />
-    <ClCompile Include="cpp\input\touch\MotionFinger.cpp" />
     <ClCompile Include="cpp\input\touch\TouchSensor.cpp" />
     <ClCompile Include="cpp\main.cpp" />
   </ItemGroup>

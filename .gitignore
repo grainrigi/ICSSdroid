@@ -1,5 +1,6 @@
 *.o
 *.so
 *.db
+*.ipch
 x86/
 ARM/

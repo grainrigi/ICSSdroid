@@ -41,15 +41,35 @@ void TouchSensor::notifyTouchEvent(int type, int32_t x, int32_t y)
 
 	if(m_data.left <= x && x <= m_data.right)
 		if(m_data.top <= y && y <= m_data.bottom) {
-			notify.type = type;
-			notify.x = x;
-			notify.y = y;
-			if(type != TouchSensor::EVENT_MOVE && this->m_data.queue != nullptr)
-			    this->m_data.queue->put(notify);
-			m_isTouching = (type != EVENT_UP);
+			if(type == TouchNotifyParam::ACTION_DOWN) {
+				notify.id = 0;
+				notify.action = ACTION_DOWN;
+				notify.x = x;
+				notify.y = y;
+				if(this->m_data.queue != nullptr)
+					this->m_data.queue->put(notify);
+				m_isTouching = true;
+			}
+			else if(type == TouchNotifyParam::ACTION_UP) {
+				notify.id = 0;
+				notify.action = ACTION_UP;
+				notify.x = x;
+				notify.y = y;
+				if (this->m_data.queue != nullptr)
+					this->m_data.queue->put(notify);
+				m_isTouching = false;
+			}
 			return;
 		}
 		
 	//if finger is out of range
-	m_isTouching = false;
+	if(m_isTouching) {
+		notify.id = 0;
+		notify.action = ACTION_CANCEL;
+		notify.x = x;
+		notify.y = y;
+		if (this->m_data.queue != nullptr)
+			this->m_data.queue->put(notify);
+		m_isTouching = false;
+	}
 }

@@ -4,8 +4,8 @@
 #include "util/threading/LockFreeQueue8.h"
 #include "util/basic/Singleton.h"
 
-#include "./touch/MotionFinger.h"
 #include "./touch/TouchSensor.h"
+#include "./touch/TouchNotifyParam.h"
 
 
 
@@ -16,17 +16,29 @@ namespace ICSS {
 			//This class is only for Singleton
 			friend class ICSS::Singleton<InputManager>;
 
-			typedef std::unordered_map<int32_t, std::pair<bool, touch::MotionFinger>> FingerMap;
-			typedef FingerMap::value_type FingerMapValue;
+			struct FingerData {
+				uint32_t id;
+				int32_t lastX;
+				int32_t lastY;
 
-			FingerMap m_fingers;
+				FingerData(uint32_t id_, int32_t lx_, int32_t ly_) { id = id_; lastX = lx_; lastY = ly_; }
+			};
+
+			std::unordered_map<int32_t, FingerData> m_fingerIndices;
 			std::unordered_map<uint32_t, touch::TouchSensor> m_tsensors;
+			std::unordered_map<uint32_t, threading::IQueueWriter<touch::TouchNotifyParam>*> m_fingerQueues;
 
 			std::mutex m_mtxTsensors;
+			std::mutex m_mtxFingerQueues;
 		public:
+			//Thread Safety : Non-ThreadSafe
 			void handleInput(AInputEvent *event);
 
+			//Thread Safety of following 4 functions : ThreadSafe
 			uint32_t addTouchSensor(const touch::TouchSensor::Data &data);
+			void deleteTouchSensor(uint32_t id);
+			uint32_t registerFingerListner(threading::IQueueWriter<touch::TouchNotifyParam> *queue);
+			void unregisterFingerListner(uint32_t id);
 		private:
 			InputManager(void);
 			static uint32_t obtainID(void);
