@@ -7,6 +7,13 @@
 #include "android/android_native_app_glue.h"
 #include "graphics/GLEnvironment.h"
 #include "util/threading/Thread.h"
+#include "input/InputManager.h"
+#include "util/threading/LockFreeQueue8.h"
+
+using ICSS::threading::LockFreeQueue8;
+using ICSS::input::InputManager;
+using ICSS::input::touch::TouchNotifyParam;
+using ICSS::input::touch::TouchSensor;
 
 template<typename FunGetIv, typename FunGetLog>
 std::string getGLLogStr(GLuint obj, FunGetIv funGetIv, FunGetLog funGetLog)
@@ -170,6 +177,11 @@ class ThisApp
 {
 	android_app *app_;
 	ThisAppGraphics gl_;
+	LockFreeQueue8<TouchNotifyParam> iqueue_;
+	uint32_t iqid_;
+	InputManager iman_;
+	TouchSensor::Data tsdata_ = { 100, 100, 500, 500 };
+
 
 	struct SavedState
 	{
@@ -177,11 +189,14 @@ class ThisApp
 	SavedState state_;
 public:
 	explicit ThisApp(android_app *app)
-		: app_(app)
+		: app_(app),
+		iqueue_(64)
 	{
 		app->userData = this;
 		app->onAppCmd = handleCmdStatic;
 		app->onInputEvent = handleInputStatic;
+		tsdata_.queue = &iqueue_;
+		iqid_ = iman_.addTouchSensor(tsdata_);
 	}
 	ThisApp(const ThisApp &) = delete;
 	ThisApp &operator=(const ThisApp &) = delete;
@@ -190,6 +205,7 @@ public:
 		app_->userData = nullptr;
 		app_->onAppCmd = nullptr;
 		app_->onInputEvent = nullptr;
+		iman_.deleteTouchSensor(iqid_);
 	}
 
 private:
@@ -249,6 +265,7 @@ private:
 	}
 	int32_t handleInput(AInputEvent *event)
 	{
+		/*
 		LOGI("handleInput(type=%d, deviceId=%d, source=%d)",
 			AInputEvent_getType(event),
 			AInputEvent_getDeviceId(event),
@@ -275,13 +292,17 @@ private:
 					AMotionEvent_getX(event, 0),
 					AMotionEvent_getY(event, 0),
 					AMotionEvent_getSize(event, 0));
-				//size_t AMotionEvent_getPointerCount
-				//d AMotionEvent_getPointerId
-				//d AMotionEvent_getToolType
-				//f AMotionEvent_getRawX
-				//...etc(see:<ndkdir>/platforms/android-*/arch-*/usr/include/android/input.h)
-				//return 1;
 				break;
+		}
+		*/
+		this->iman_.handleInput(event);
+		TouchNotifyParam param;
+		while(this->iqueue_.get(&param)) {
+			LOGI("handleMotionEvent(action=%d, fingerid=%d, x=%d, y=%d)",
+				param.action,
+				param.id,
+				param.x,
+				param.y);
 		}
 		return 0;
 	}

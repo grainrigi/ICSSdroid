@@ -32,6 +32,7 @@ namespace touch{
 	private:
 		//for internal use
 		bool m_isTouching = false;
+		uint32_t m_fingerid;
 		int32_t m_x;
 		int32_t m_y;
 		Data m_data;
@@ -49,7 +50,7 @@ namespace touch{
 	private:
 		//for friend
 		TouchSensor(const Data &data);
-		void notifyTouchEvent(int type, int32_t x, int32_t y);
+		void notifyTouchEvent(uint32_t id, int type, int32_t x, int32_t y);
 	};
 
 }

@@ -7,6 +7,8 @@
 #include "IQueueReader.h"
 #include "IQueueWriter.h"
 
+#define MINUS_ONE 0xFF
+
 
 namespace ICSS {
 namespace threading {
@@ -56,7 +58,7 @@ namespace threading {
 		virtual bool get(_Ty *buffer) override {
 			uint8_t idx;
 
-			if((idx = popIndex()) == -1)
+			if((idx = popIndex()) == MINUS_ONE)
 				return false;
 
 			memcpy(buffer, this->m_buffer + idx, sizeof(_Ty));
@@ -72,7 +74,7 @@ namespace threading {
 		{
 			uint8_t idx;
 
-			if((idx = reserveWriteSpace()) == -1)
+			if((idx = reserveWriteSpace()) == MINUS_ONE)
 				return false;
 
 			memcpy(this->m_buffer + idx, &data, sizeof(_Ty));
@@ -94,8 +96,8 @@ namespace threading {
 			}
 		}
 
-		LockFreeQueue8(const LockFreeQueue8&&) = default;
-		LockFreeQueue8 &operator=(const LockFreeQueue8&&) = default;
+		LockFreeQueue8(LockFreeQueue8&&) = default;
+		LockFreeQueue8 &operator=(LockFreeQueue8&&) = default;
 	private:
 		uint8_t popIndex(void) 
 		{
@@ -108,7 +110,7 @@ namespace threading {
 				ctr = m_count;
 				if (ctr <= 0)
 					//buffer is empty
-					return -1;
+					return MINUS_ONE;
 
 				//decrease the count
 				if (m_count.compare_exchange_weak(ctr, ctr - 1))
@@ -142,7 +144,7 @@ namespace threading {
 				ctr = m_count;
 				if(ctr >= m_size - 1)
 					//buffer is full
-					return -1;
+					return MINUS_ONE;
 
 				//increase the count
 				if(m_count.compare_exchange_weak(ctr, ctr + 1))
@@ -155,7 +157,7 @@ namespace threading {
 				if(m_ready[widx])
 				{
 					m_count--;
-					return -1;
+					return MINUS_ONE;
 				}
 
 				newwidx = (widx + 1) % m_size;

@@ -18,9 +18,10 @@ namespace ICSS {
 
 			struct FingerData {
 				uint32_t id;
-				int32_t lastX;
-				int32_t lastY;
+				float lastX;
+				float lastY;
 
+				FingerData() = default;
 				FingerData(uint32_t id_, int32_t lx_, int32_t ly_) { id = id_; lastX = lx_; lastY = ly_; }
 			};
 
@@ -32,24 +33,27 @@ namespace ICSS {
 			std::mutex m_mtxFingerQueues;
 		public:
 			//Thread Safety : Non-ThreadSafe
-			void handleInput(AInputEvent *event);
+			int32_t handleInput(AInputEvent *event);
 
 			//Thread Safety of following 4 functions : ThreadSafe
 			uint32_t addTouchSensor(const touch::TouchSensor::Data &data);
 			void deleteTouchSensor(uint32_t id);
 			uint32_t registerFingerListner(threading::IQueueWriter<touch::TouchNotifyParam> *queue);
 			void unregisterFingerListner(uint32_t id);
-		private:
+
+			//For Debug
 			InputManager(void);
+		private:
+			//InputManager(void);
 			static uint32_t obtainID(void);
 
 			void notifyAllSensors(int type, int32_t x, int32_t y);
 
 			//disabled
-			InputManager(const InputManager&) = delete;
+			/*InputManager(const InputManager&) = delete;
 			InputManager &operator=(const InputManager&) = delete;
 			InputManager(const InputManager&&) = delete;
-			InputManager &operator=(const InputManager&&) = delete;
+			InputManager &operator=(const InputManager&&) = delete;*/
 		};
 
 	}
