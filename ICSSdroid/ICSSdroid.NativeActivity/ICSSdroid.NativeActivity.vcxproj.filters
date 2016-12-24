@@ -49,6 +49,45 @@
     <ClInclude Include="include\input\touch\TouchNotifyParam.h">
       <Filter>Headers\input\touch</Filter>
     </ClInclude>
+    <ClInclude Include="include\graphics\gles\GLES2Handler.h">
+      <Filter>Headers\graphics\gles2</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\IPrimitive.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\DrawEnv.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\GraphicsManager.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\gles\GLESVersion.h">
+      <Filter>Headers\graphics\gles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\gles\GLShaderSet.h">
+      <Filter>Headers\graphics\gles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\GLTexture.h">
+      <Filter>Headers\graphics\gles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\android\AssetManager.h">
+      <Filter>Headers\android</Filter>
+    </ClInclude>
+    <ClInclude Include="include\android\Asset.h">
+      <Filter>Headers\android</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\file\stb_image.h">
+      <Filter>Headers\util\file</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\file\ImageFile.h">
+      <Filter>Headers\util\file</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\file\BinaryFile.h">
+      <Filter>Headers\util\file</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\container\Uint8Array.h">
+      <Filter>Headers\util\container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\android\android_native_app_glue.c">
@@ -65,6 +104,28 @@
     </ClCompile>
     <ClCompile Include="cpp\input\touch\TouchSensor.cpp">
       <Filter>Sources\input\touch</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\gles\GLESVersion.cpp">
+      <Filter>Sources\graphics\gles</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\gles\GLShaderSet.cpp">
+      <Filter>Sources\graphics\gles</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\android\AssetManager.cpp">
+      <Filter>Sources\android</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\util\file\stb_image.c">
+      <Filter>Sources\util\file</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\android\Asset.cpp">
+      <Filter>Sources\android</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\util\file\BinaryFile.cpp">
+      <Filter>Sources\util\file</Filter>
+    </ClCompile>
+    <ClCompile Include="include\util\container\Uint8Array.cpp" />
+    <ClCompile Include="cpp\util\file\ImageFile.cpp">
+      <Filter>Sources\util\file</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +190,24 @@
     </Filter>
     <Filter Include="Sources\util\threading">
       <UniqueIdentifier>{fef43c6b-8a2e-47a5-bcb0-57dff468ea1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\graphics\gles2">
+      <UniqueIdentifier>{a065d216-f053-4b8b-8d87-1db52f271c50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\graphics\gles">
+      <UniqueIdentifier>{37381096-e40e-4574-a0bd-56a93bda07fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\graphics\gles">
+      <UniqueIdentifier>{00ac6933-c889-415b-84a2-f1b72a03e15f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\util\file">
+      <UniqueIdentifier>{1a573836-4335-4c7b-9c1f-d0ebf1d9bb6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\util\file">
+      <UniqueIdentifier>{5af26c3b-48e0-4587-b483-fc7078e1cc73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\util\container">
+      <UniqueIdentifier>{2b0ef5da-fc97-4430-a1df-77722d855e00}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

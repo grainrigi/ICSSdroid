@@ -119,6 +119,7 @@
     </AntPackage>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Content Include="assets\ninapri.png" />
     <Content Include="res\values\strings.xml" />
     <AntBuildXml Include="build.xml" />
     <AndroidManifest Include="AndroidManifest.xml" />
@@ -128,6 +129,9 @@
     <ProjectReference Include="..\ICSSdroid.NativeActivity\ICSSdroid.NativeActivity.vcxproj">
       <Project>{f3b0f9a5-7368-4ac5-9ebc-d66ee35f5674}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <JavaCompile Include="MessageBox.java" />
   </ItemGroup>
   <Import Project="$(AndroidTargetsPath)\Android.targets" />
   <ImportGroup Label="ExtensionTargets" />
