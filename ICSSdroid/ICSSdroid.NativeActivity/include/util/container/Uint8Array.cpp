@@ -29,7 +29,8 @@ Uint8Array::~Uint8Array(void)
 {
 	if(m_array != nullptr)
 	{
-		this->m_deleter(m_array);
+		if(m_deleter)
+			this->m_deleter(m_array);
 		m_array = nullptr;
 	}
 }
@@ -49,6 +50,7 @@ Uint8Array & Uint8Array::operator=(const Uint8Array & ary)
 
 	if(m_array != nullptr)
 		m_deleter(m_array);
+	m_deleter = Uint8Array::default_deleter;
 	m_array = new uint8_t[m_size];
 	memcpy(m_array, ary.m_array, m_size);
 
@@ -58,7 +60,7 @@ Uint8Array & Uint8Array::operator=(const Uint8Array & ary)
 Uint8Array::Uint8Array(Uint8Array && ary)
 	: m_size(ary.m_size),
 	m_array(ary.m_array),
-	m_deleter(Uint8Array::default_deleter)
+	m_deleter(ary.m_deleter)
 {
 	ary.m_array = nullptr;
 }
@@ -69,6 +71,7 @@ Uint8Array & Uint8Array::operator=(Uint8Array && ary)
 
 	if (m_array != nullptr)
 		m_deleter(m_array);
+	m_deleter = ary.m_deleter;
 	m_array = ary.m_array;
 	ary.m_array = nullptr;
 

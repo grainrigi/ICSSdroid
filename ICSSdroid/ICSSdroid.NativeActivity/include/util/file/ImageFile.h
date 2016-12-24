@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "util/container/Uint8Array.h"
+#include "util/file/BinaryFile.h"
 
 namespace ICSS{
 namespace file{
@@ -18,8 +19,9 @@ namespace file{
 		};
 
 		//The file size is limited up to 4GiB
-		static ImageFile loadFromFile(const std::string &fileName, int format);
+		static ImageFile loadFromFile(const BinaryFile &file, int format);
 		static ImageFile loadFromMemory(const uint8_t *buffer, uint32_t size, int format);
+		ImageFile(void);
 		~ImageFile(void) = default;
 
 		ImageFile(const ImageFile &img) = default;
@@ -35,7 +37,6 @@ namespace file{
 		const uint8_t *getPixels(void) const { return this->m_pixels.getPtr(); }
 
 	private:
-		ImageFile(void);
 	};
 
 }

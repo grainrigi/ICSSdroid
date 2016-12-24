@@ -8,10 +8,8 @@ using ICSS::file::ImageFile;
 
 using ICSS::container::Uint8Array;
 
-ImageFile ImageFile::loadFromFile(const std::string & fileName, int format)
+ImageFile ImageFile::loadFromFile(const BinaryFile &file, int format)
 {
-	BinaryFile file = BinaryFile::loadFromFile(fileName);
-
 	return loadFromMemory(file.getData(), file.getSize(), format);
 }
 
@@ -27,7 +25,7 @@ ImageFile ICSS::file::ImageFile::loadFromMemory(const uint8_t * buffer, uint32_t
 			format
 		)),
 		img.m_x * img.m_y * img.m_channels, 
-		[&](uint8_t *ptr) -> void {
+		[](uint8_t *ptr) -> void {
 			stbi_image_free(ptr);
 		}
 	);
@@ -41,3 +39,4 @@ ImageFile::ImageFile(void)
 	m_channels(0)
 {
 }
+
