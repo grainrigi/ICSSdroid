@@ -41,19 +41,17 @@ namespace ICSS {
 			uint32_t registerFingerListner(threading::IQueueWriter<touch::TouchNotifyParam> *queue);
 			void unregisterFingerListner(uint32_t id);
 
-			//For Debug
-			InputManager(void);
 		private:
-			//InputManager(void);
+			InputManager(void);
 			static uint32_t obtainID(void);
 
 			void notifyAllSensors(int type, int32_t x, int32_t y);
 
 			//disabled
-			/*InputManager(const InputManager&) = delete;
+			InputManager(const InputManager&) = delete;
 			InputManager &operator=(const InputManager&) = delete;
 			InputManager(const InputManager&&) = delete;
-			InputManager &operator=(const InputManager&&) = delete;*/
+			InputManager &operator=(const InputManager&&) = delete;
 		};
 
 	}

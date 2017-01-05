@@ -195,7 +195,7 @@ void ICSS::input::InputManager::unregisterFingerListner(uint32_t id)
 
 InputManager::InputManager(void)
 {
-	
+	LOGI("InputManager init");
 }
 
 uint32_t ICSS::input::InputManager::obtainID(void)

@@ -4,7 +4,7 @@
 *  @brief  シングルトンホルダー
 */
 namespace ICSS {
-	template <class _Ty>
+	template <class _Ty, class... _Args>
 	class Singleton
 	{
 	public:
@@ -12,10 +12,10 @@ namespace ICSS {
 
 	public:
 		/// 生成
-		static void create()
+		static void create(_Args... args)
 		{
 			if (_instance == NULL) {
-				_instance = new InstanceType();
+				_instance = new InstanceType(args...);
 			}
 		}
 		/// 破棄
@@ -67,9 +67,11 @@ namespace ICSS {
 
 		Singleton(const Singleton&) = delete;
 		Singleton& operator=(const Singleton&) = delete;
+		Singleton(const Singleton&&) = delete;
+		Singleton& operator=(const Singleton&&) = delete;
 	};
 
-	template <class _Ty>
-	typename Singleton<_Ty>::InstanceType* Singleton<_Ty>::_instance = NULL;
+	template <class _Ty, class... _Args>
+	typename Singleton<_Ty, _Args...>::InstanceType* Singleton<_Ty, _Args...>::_instance = NULL;
 
 }
