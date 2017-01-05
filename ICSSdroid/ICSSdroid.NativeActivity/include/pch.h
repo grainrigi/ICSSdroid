@@ -17,7 +17,8 @@
 #include <sys/resource.h>
 
 #include <EGL/egl.h>
-#include <GLES/gl.h>
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
 
 #include <android/sensor.h>
 
@@ -26,12 +27,14 @@
 
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <thread>
 #include <functional>
 #include <vector>
 #include <exception>
 #include <memory>
 #include <unordered_map>
+#include <map>
 #include <atomic>
 #include <mutex>
 #include <algorithm>
@@ -39,9 +42,9 @@
 #define DO_LOG
 
 #ifdef DO_LOG
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "nativeactivitytest", __VA_ARGS__))
-#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "nativeactivitytest", __VA_ARGS__))
-#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, "nativeactivitytest", __VA_ARGS__))
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "icssdroid", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "icssdroid", __VA_ARGS__))
+#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, "icssdroid", __VA_ARGS__))
 #else
 #define LOGI(...)
 #define LOGW(...)

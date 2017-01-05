@@ -88,6 +88,21 @@
     <ClInclude Include="include\util\container\Uint8Array.h">
       <Filter>Headers\util\container</Filter>
     </ClInclude>
+    <ClInclude Include="include\graphics\Mesh2D.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\Geometry.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\gles\GLVBO.h">
+      <Filter>Headers\graphics\gles</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\graphics\gles\GLExtention.h">
+      <Filter>Headers\graphics\gles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\Mesh2DRenderer.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\android\android_native_app_glue.c">
@@ -123,9 +138,21 @@
     <ClCompile Include="cpp\util\file\BinaryFile.cpp">
       <Filter>Sources\util\file</Filter>
     </ClCompile>
-    <ClCompile Include="include\util\container\Uint8Array.cpp" />
     <ClCompile Include="cpp\util\file\ImageFile.cpp">
       <Filter>Sources\util\file</Filter>
+    </ClCompile>
+    <ClCompile Include="include\util\container\Uint8Array.cpp">
+      <Filter>Sources\util\container</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\gles\GLVBO.cpp">
+      <Filter>Sources\graphics\gles</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\Mesh2D.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="include\graphics\DrawEnv.cpp" />
+    <ClCompile Include="cpp\graphics\Mesh2DRenderer.cpp">
+      <Filter>Sources\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +235,9 @@
     </Filter>
     <Filter Include="Headers\util\container">
       <UniqueIdentifier>{2b0ef5da-fc97-4430-a1df-77722d855e00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\util\container">
+      <UniqueIdentifier>{61fc5a84-671d-446d-89cd-725874752cef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

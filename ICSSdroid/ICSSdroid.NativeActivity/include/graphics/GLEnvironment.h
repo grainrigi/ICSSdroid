@@ -43,7 +43,7 @@ public:
 	// Attach/Detach ANativeWindow
 	//
 
-	static const bool preserveEGLContextOnPause = true;
+	static const bool preserveEGLContextOnPause = false;
 	bool initWindow(ANativeWindow *window)
 	{
 		LOGI("initWindow");
@@ -81,6 +81,7 @@ public:
 		}
 
 		drawFrame();
+		
 		if (!swap()) {
 			recreate(window);
 			drawFrame();
@@ -89,6 +90,7 @@ public:
 				return false;
 			}
 		}
+		
 		return true;
 	}
 
@@ -96,7 +98,7 @@ private:
 	bool swap()
 	{
 		if (hasSurface()) {
-			LOGI("swap");
+			//LOGI("swap");
 			if (!eglSwapBuffers(display_, surface_)) {
 				LOGI("eglSwapBuffers failed");
 				return false;
@@ -115,6 +117,8 @@ private:
 
 	bool connectDisplay()
 	{
+		GLint major, minor;
+
 		if (display_ == EGL_NO_DISPLAY) {
 			// Get current display.
 			const EGLDisplay uninitializedDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
@@ -123,12 +127,13 @@ private:
 				LOGE("eglGetDisplay failed");
 				return false;
 			}
-			if (!eglInitialize(uninitializedDisplay, 0, 0)) {
+			if (!eglInitialize(uninitializedDisplay, &major, &minor)) {
 				LOGE("eglInitialize failed");
 				return false;
 			}
 			display_ = uninitializedDisplay;
 		}
+		eglSwapInterval(display_, 1);
 		return true;
 	}
 	void disconnectDisplay()
@@ -221,6 +226,7 @@ private:
 			eglQuerySurface(display_, surface_, EGL_WIDTH, &screenWidth_);
 			eglQuerySurface(display_, surface_, EGL_HEIGHT, &screenHeight_);
 			LOGI("screen size %d x %d", screenWidth_, screenHeight_);
+
 		}
 		return true;
 	}
@@ -322,6 +328,7 @@ private:
 			initializeContextState();
 			contextInitialized_ = true;
 		}
+		LOGI("%s", (const char*)glGetString(GL_VERSION));
 		return true;
 	}
 	void termContext()

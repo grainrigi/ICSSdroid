@@ -1,44 +1,41 @@
-#include <android/log.h>
-#include <memory>
-#include <string>
-#include <EGL/egl.h>
-#include <GLES2/gl2.h>
+#include "pch.h"
+
+#include "util/file/stb_image.h"
 
 #include "android/android_native_app_glue.h"
+#include "android/AssetManager.h"
 #include "graphics/GLEnvironment.h"
+#include "graphics/gles/GLESVersion.h"
+#include "graphics/gles/GLShaderSet.h"
+#include "graphics/gles/GLVBO.h"
+#include "graphics/Mesh2D.h"
+#include "graphics/Mesh2DRenderer.h"
 #include "util/threading/Thread.h"
 #include "input/InputManager.h"
 #include "util/threading/LockFreeQueue8.h"
+#include "util/file/ImageFile.h"
 
+using ICSS::Singleton;
 using ICSS::threading::LockFreeQueue8;
+using ICSS::android::AssetManagerSingleton;
+using ICSS::android::Asset;
+using ICSS::graphics::gles::GLESVersionSingleton;
+using ICSS::graphics::gles::GLShaderSet;
+using ICSS::graphics::gles::GLVBO;
+using ICSS::graphics::Mesh2D;
+using ICSS::graphics::Mesh2DRenderer;
+using ICSS::graphics::DrawEnv;
 using ICSS::input::InputManager;
 using ICSS::input::touch::TouchNotifyParam;
 using ICSS::input::touch::TouchSensor;
+using ICSS::file::ImageFile;
+
+constexpr float PI = 3.1415926535f;
 
 template<typename FunGetIv, typename FunGetLog>
-std::string getGLLogStr(GLuint obj, FunGetIv funGetIv, FunGetLog funGetLog)
-{
-	GLint len = 0;
-	funGetIv(obj, GL_INFO_LOG_LENGTH, &len);
-	if (len > 1) {
-		std::unique_ptr<char[]> infoLog(new char[len]);
-		funGetLog(obj, len, nullptr, infoLog.get());
-		return std::string(infoLog.get());
-	}
-	else {
-		return std::string();
-	}
-
-	
-}
-std::string getGLShaderLogInfo(GLuint obj)
-{
-	return getGLLogStr(obj, glGetShaderiv, glGetShaderInfoLog);
-}
-std::string getGLProgramLogInfo(GLuint obj)
-{
-	return getGLLogStr(obj, glGetProgramiv, glGetProgramInfoLog);
-}
+std::string getGLLogStr(GLuint obj, FunGetIv funGetIv, FunGetLog funGetLog);
+std::string getGLShaderLogInfo(GLuint obj);
+std::string getGLProgramLogInfo(GLuint obj);
 
 GLuint loadShader(GLenum type, const char *shaderSrc)
 {
@@ -78,15 +75,16 @@ GLuint loadShader(GLenum type, const char *shaderSrc)
 
 class ThisAppGraphics : public GLEnvironment
 {
-	GLuint vertexShader_;
-	GLuint fragmentShader_;
-	GLuint programObject_;
+	GLint unif_tex_;
+	GLint unif_phase_;
+	GLuint texture_;
+	GLShaderSet shader_;
+	DrawEnv env_;
+	Mesh2D mesh_;
+
 public:
 	ThisAppGraphics()
-		: GLEnvironment(),
-		vertexShader_(0),
-		fragmentShader_(0),
-		programObject_(0)
+		: GLEnvironment()
 	{
 	}
 private:
@@ -94,74 +92,112 @@ private:
 	{
 		LOGI("loadResources");
 
-		const char vShaderStr[] =
-			"attribute vec4 vPosition;"
+		GLfloat vertices[]{
+			-0.5f, -0.5f, 0.0f,
+			-0.5f, 0.5f, 0.0f,
+			0.5f, -0.5f, 0.0f,
+			0.5f, 0.5f, 0.0f
+		};
+		GLfloat coords[]{
+			0.0f, 0.0f,
+			0.0f, 1.0f,
+			1.0f, 0.0f,
+			1.0f, 1.0f
+		};
+		
+		GLfloat colors[]{
+			PI / 2.0f, 0.0f, 0.0f, 1.0f,
+			0.0f, 0.0f, PI / 2.0f, 1.0f,
+			0.0f, PI / 2.0f, 0.0f, 1.0f,
+			PI / 2.0f, PI / 2.0f, 0.0f, 1.0f,
+		};
+
+		std::string vShader{
+			"uniform mediump float unif_phase;"
+			"attribute mediump vec4 attr_pos; "
+			"attribute mediump vec4 attr_color;"
+			"varying mediump vec4 vary_color;"
 			"void main(){"
-			"  gl_Position = vPosition;"
-			"}";
-		const char fShaderStr[] =
+			"  gl_Position = attr_pos;"
+			"  vary_color = (sin(attr_color + unif_phase) + 1.0) * 0.5;"
+			"  vary_color.a = 1.0;"
+			"}"
+		};
+		std::string fShader{
+			"varying mediump vec4 vary_color;"
 			"precision mediump float;"
 			"void main(){"
-			"  gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);"
-			"}";
-		vertexShader_ = loadShader(GL_VERTEX_SHADER, vShaderStr);
-		fragmentShader_ = loadShader(GL_FRAGMENT_SHADER, fShaderStr);
-		programObject_ = glCreateProgram();
+			"  gl_FragColor = vary_color;"
+			"}"
+		};
 
-		glAttachShader(programObject_, vertexShader_);
-		glAttachShader(programObject_, fragmentShader_);
-		glBindAttribLocation(programObject_, 0, "vPosition");
-		glLinkProgram(programObject_);
-
-		GLint linked = 0;
-		glGetProgramiv(programObject_, GL_LINK_STATUS, &linked);
-		if (!linked) {
-			LOGI("glLinkProgram failed.\n Error:(%s)\n", getGLProgramLogInfo(programObject_).c_str());
+		try {
+			shader_ = GLShaderSet::createFromString(vShader, fShader, 
+			{
+				{ 0, "attr_pos" },
+				{ 1, "attr_color" },
+			});
+			unif_phase_ = glGetUniformLocation(shader_.program(), "unif_phase");
+		}
+		catch(std::runtime_error ex) {
+			LOGE("%s", ex.what());
 			return false;
 		}
+ 
+		//create texture
+		Asset texpng = AssetManagerSingleton::getInstance().loadAsset("ninapri.png");
+		ImageFile img = ImageFile::loadFromFile(texpng, ImageFile::FORMAT_RGBA);
+		glGenTextures(1, &texture_);
+		glBindTexture(GL_TEXTURE_2D, texture_);
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.getX(), img.getY(), 0, GL_RGBA, GL_UNSIGNED_BYTE, img.getPixels());
+		GLenum err = glGetError();
+		if(err != GL_NO_ERROR)
+			LOGE("glTexImage2D failed.Error:%d", err);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // 拡大時近傍
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // 縮小時近傍
+		glEnable(GL_TEXTURE_2D);
+
+		mesh_ = Mesh2D(4 ,Mesh2D::ATTR_POSITION | Mesh2D::ATTR_COLOR, GL_STATIC_DRAW);
+		memcpy(&(*mesh_.positions())[0], vertices, sizeof(vertices));
+		memcpy(&(*mesh_.colors())[0], colors, sizeof(colors));
+		mesh_.upload();
 
 		return true;
 	}
 	virtual void unloadResources() override
 	{
 		LOGI("unloadResources");
-		if (programObject_) {
-			glDeleteProgram(programObject_);
-			programObject_ = 0;
-		}
-		if (vertexShader_) {
-			glDeleteShader(vertexShader_);
-			vertexShader_ = 0;
-		}
-		if (fragmentShader_) {
-			glDeleteShader(fragmentShader_);
-			fragmentShader_ = 0;
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		if(texture_) {
+			glDeleteTextures(1, &texture_);
 		}
 	}
 	virtual void initializeContextState() override
 	{
-		glEnable(GL_CULL_FACE);
+		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 		glViewport(0, 0, getScreenWidth(), getScreenHeight());
 	}
 
 	virtual void drawFrame() override
 	{
-		LOGI("drawFrame");
-		static GLfloat vertices[] = {
-			0.0f, 0.5f, 0.0f,
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f
-		};
-		vertices[1] -= 0.01f;
+		//LOGI("drawFrame");
+		DrawEnv env;
+		Mesh2D::ShaderAttributes attr { 0, -1, 1 };
+		static float phase = 0.0f;
 
-		glClearColor(0, 1, 1, 1);
+		phase += 0.1f;
+
+		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glUseProgram(programObject_);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, vertices);
-		glEnableVertexAttribArray(0);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glBindTexture(GL_TEXTURE_2D, texture_);
+		glUseProgram(shader_.program());
+		glUniform1f(unif_phase_, phase);
+
+		mesh_.draw(&env, shader_, attr);
 	}
 };
 
@@ -179,8 +215,8 @@ class ThisApp
 	ThisAppGraphics gl_;
 	LockFreeQueue8<TouchNotifyParam> iqueue_;
 	uint32_t iqid_;
-	InputManager iman_;
 	TouchSensor::Data tsdata_ = { 100, 100, 500, 500 };
+	bool working = false;
 
 
 	struct SavedState
@@ -196,7 +232,9 @@ public:
 		app->onAppCmd = handleCmdStatic;
 		app->onInputEvent = handleInputStatic;
 		tsdata_.queue = &iqueue_;
-		iqid_ = iman_.addTouchSensor(tsdata_);
+		Singleton<InputManager>::create();
+		AssetManagerSingleton::create(app->activity->assetManager);
+		iqid_ = Singleton<InputManager>::getInstance().registerFingerListner(&iqueue_);
 	}
 	ThisApp(const ThisApp &) = delete;
 	ThisApp &operator=(const ThisApp &) = delete;
@@ -205,7 +243,11 @@ public:
 		app_->userData = nullptr;
 		app_->onAppCmd = nullptr;
 		app_->onInputEvent = nullptr;
-		iman_.deleteTouchSensor(iqid_);
+		Singleton<Mesh2DRenderer>::destroy();
+		GLESVersionSingleton::destroy();
+		AssetManagerSingleton::destroy();
+		Singleton<InputManager>::getInstance().unregisterFingerListner(iqid_);
+		Singleton<InputManager>::destroy();
 	}
 
 private:
@@ -226,16 +268,15 @@ private:
 			{
 				ICSS::threading::Thread th(testThread, nullptr);
 				LOGI("handleCmd(APP_CMD_INIT_WINDOW)");
+				GLESVersionSingleton::create(app_->window);
+				LOGI("OpenGLES Version : %d", GLESVersionSingleton::getInstance().getGLESVersion());
 				// The window is being shown, get it ready.
 				if (app_->window) {
 					gl_.initWindow(app_->window);
+					Singleton<Mesh2DRenderer>::create();
 					gl_.presentFrame(app_->window);
 				}
-				timespec spec;
-				std::stringstream precis_str;
-				clock_getres(CLOCK_MONOTONIC, &spec);
-				precis_str << "time_precision:" << spec.tv_nsec;
-				LOGI(precis_str.str().c_str());
+
 				break;
 			}
 			case APP_CMD_TERM_WINDOW:
@@ -251,11 +292,11 @@ private:
 			case APP_CMD_LOST_FOCUS: LOGI("handleCmd(APP_CMD_LOST_FOCUS)"); break;
 
 				// Activity State
-			case APP_CMD_START: LOGI("handleCmd(APP_CMD_START)"); break;
-			case APP_CMD_RESUME: LOGI("handleCmd(APP_CMD_RESUME)"); break;
-			case APP_CMD_PAUSE: LOGI("handleCmd(APP_CMD_PAUSE)"); break;
-			case APP_CMD_STOP: LOGI("handleCmd(APP_CMD_STOP)"); break;
-			case APP_CMD_DESTROY: LOGI("handleCmd(APP_CMD_DESTROY)"); break;
+			case APP_CMD_START: {LOGI("handleCmd(APP_CMD_START)");working = true; break;}
+			case APP_CMD_RESUME: LOGI("handleCmd(APP_CMD_RESUME)"); working = true; break;
+			case APP_CMD_PAUSE: {LOGI("handleCmd(APP_CMD_PAUSE)"); working = false; break;}
+			case APP_CMD_STOP: LOGI("handleCmd(APP_CMD_STOP)"); working = false; break;
+			case APP_CMD_DESTROY: LOGI("handleCmd(APP_CMD_DESTROY)"); working = false; break;
 
 			case APP_CMD_SAVE_STATE:
 				LOGI("handleCmd(APP_CMD_SAVE_STATE)");
@@ -295,7 +336,7 @@ private:
 				break;
 		}
 		*/
-		this->iman_.handleInput(event);
+		Singleton<InputManager>::getInstance().handleInput(event);
 		TouchNotifyParam param;
 		while(this->iqueue_.get(&param)) {
 			LOGI("handleMotionEvent(action=%d, fingerid=%d, x=%d, y=%d)",
@@ -335,7 +376,8 @@ private:
 	{
 		// なんらかのイベントが処理された後または、
 		// getNextEventDelayTimeMilli()が返した時間経過したときに呼ばれる。
-		//gl_.presentFrame(app_->window);
+		if(working)
+			gl_.presentFrame(app_->window);
 	}
 
 	int looperIdNext_ = LOOPER_ID_USER;
@@ -393,7 +435,13 @@ public:
 
 void android_main(android_app *state)
 {
-
+	try{
 	ThisApp thisApp(state);
 	thisApp.run();
+
+	}
+	catch(std::runtime_error ex) {
+		LOGE("%s", ex.what());
+		return;
+	}
 }
