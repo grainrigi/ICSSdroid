@@ -17,19 +17,24 @@ You should have received a copy of the GNU General Public License
 along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
 #include "graphics/DrawEnv.h"
 
-namespace ICSS{
-namespace graphics{
+using namespace ICSS::graphics;
 
-	class IPrimitive {
-	public:
-		virtual void draw(DrawEnv *env) = 0;
-		virtual ~IPrimitive(void){};
-		IPrimitive(void) {};
-	protected:
-	};
-
+DrawEnv::DrawEnv(void)
+	: m_texture(0),
+	m_program(0)
+{
 }
+
+void ICSS::graphics::DrawEnv::setTexture(GLuint texture)
+{
+	if (m_texture != texture)
+		glBindTexture(GL_TEXTURE_2D, texture);
+}
+
+void ICSS::graphics::DrawEnv::setShader(const ICSS::graphics::gles::GLShaderSet & shader)
+{
+		glUseProgram(shader.program());
+	m_program = shader.program();
 }

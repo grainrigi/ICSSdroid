@@ -1,4 +1,4 @@
-/*
+/* 
 (c) 2016,2017 Grain
 
 This file is part of ICSEdit.
@@ -18,17 +18,31 @@ along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
-#include "graphics/DrawEnv.h"
+#include "graphics/MemCanvas.h"
 
-namespace ICSS{
-namespace graphics{
+namespace ICSS {
+namespace graphics {
+	class MemSubCanvasRGBA8;
 
-	class IPrimitive {
-	public:
-		virtual void draw(DrawEnv *env) = 0;
-		virtual ~IPrimitive(void){};
-		IPrimitive(void) {};
-	protected:
+	class MemCanvasRGBA8 : public MemCanvas {
+	 public:
+		MemCanvasRGBA8(int width, int height);
+		virtual ~MemCanvasRGBA8(void) {};
+
+		MemCanvasRGBA8(MemCanvasRGBA8 &&) = default;
+		MemCanvasRGBA8 &operator=(MemCanvasRGBA8 &&) = default;
+
+		virtual MemSubCanvasRGBA8 GetSubPixels(int x, int y, int width, int height);
+		void ClearWithColor(uint32_t color);
+
+		static void BitBlt(
+			MemCanvasRGBA8 &dst,
+			int dstx, int dsty, int w, int h,
+			MemCanvasRGBA8 &src,
+			int srcx, int srcy);
+		
+	 protected:
+		 MemCanvasRGBA8(int width, int height, void *mem);
 	};
 
 }

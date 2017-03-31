@@ -18,18 +18,25 @@ along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
-#include "graphics/DrawEnv.h"
+#include "util/basic/Singleton.h"
+#include "graphics/gles/GLInitWindow.h"
 
-namespace ICSS{
-namespace graphics{
+namespace ICSS {
+namespace graphics {
+namespace gles {
 
-	class IPrimitive {
-	public:
-		virtual void draw(DrawEnv *env) = 0;
-		virtual ~IPrimitive(void){};
-		IPrimitive(void) {};
-	protected:
+	class GLHandler {
+		friend class Singleton<GLHandler>;
+
+
+	 public:
+		
+		
+	 private:
+		 GLHandler(void);
+		 void initGL(void);
 	};
 
+}
 }
 }

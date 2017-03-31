@@ -1,4 +1,4 @@
-/*
+/* 
 (c) 2016,2017 Grain
 
 This file is part of ICSEdit.
@@ -18,17 +18,28 @@ along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
-#include "graphics/DrawEnv.h"
+#include "graphics/MemCanvas.h"
+#include "graphics/MemCanvasA8.h"
 
-namespace ICSS{
-namespace graphics{
+namespace ICSS {
+namespace graphics {
+	
 
-	class IPrimitive {
+	class MemSubCanvasA8 : public MemCanvasA8 {
+		friend class MemCanvasA8;
+
+		int m_orgstride;
 	public:
-		virtual void draw(DrawEnv *env) = 0;
-		virtual ~IPrimitive(void){};
-		IPrimitive(void) {};
-	protected:
+		MemSubCanvasA8() = delete;
+		virtual ~MemSubCanvasA8(void) {};
+
+		MemSubCanvasA8(MemSubCanvasA8&&) = default;
+		MemSubCanvasA8 &operator=(MemSubCanvasA8&&) = default;
+
+		virtual int stride(void) const override { return m_orgstride; }
+
+	private:
+		MemSubCanvasA8(const MemCanvasA8 &canvas, int x, int y, int width, int height);
 	};
 
 }

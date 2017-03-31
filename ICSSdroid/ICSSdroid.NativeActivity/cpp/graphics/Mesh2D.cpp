@@ -1,8 +1,27 @@
-#include "pch.h"
+/*
+(c) 2016,2017 Grain
+
+This file is part of ICSEdit.
+
+ICSEdit is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ICSEdit is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "graphics/Mesh2D.h"
 #include "graphics/Mesh2DRenderer.h"
 
 using namespace ICSS::graphics;
+using ICSS::graphics::gles::GLVBOTarget;
 
 Mesh2D::Mesh2D(void)
 	: m_flags(0),
@@ -27,8 +46,8 @@ Mesh2D::Mesh2D(uint8_t attr, GLenum usage)
 	m_vertCount(0),
 	m_elemCount(0),
 	m_isVisible(true),
-	m_vertBuf(GL_ARRAY_BUFFER, usage),
-	m_idxBuf(GL_ELEMENT_ARRAY_BUFFER, usage)
+	m_vertBuf(GLVBOTarget::ARRAY_BUFFER, usage),
+	m_idxBuf(GLVBOTarget::ELEMENT_ARRAY_BUFFER, usage)
 {
 	if(attr & ATTR_POSITION)
 		m_Position = std::make_shared<std::vector<Position>>();
@@ -49,8 +68,8 @@ Mesh2D::Mesh2D(uint16_t vertCount, uint8_t attr, GLenum usage)
 	m_vertCount(vertCount),
 	m_elemCount(0),
 	m_isVisible(true),
-	m_vertBuf(GL_ARRAY_BUFFER, usage),
-	m_idxBuf(GL_ELEMENT_ARRAY_BUFFER, usage)
+	m_vertBuf(GLVBOTarget::ARRAY_BUFFER, usage),
+	m_idxBuf(GLVBOTarget::ELEMENT_ARRAY_BUFFER, usage)
 {
 	if (attr & ATTR_POSITION)
 		m_Position = std::make_shared<std::vector<Position>>();
@@ -214,7 +233,7 @@ void Mesh2D::upload(void)
 	uint32_t posSize{0}, coordSize{0}, colorSize{0}, vertCount, idxSize;
 
 	if(m_vertCount <= 0)
-		m_vertCount = -(vertCount = std::max(
+		m_vertCount = -(vertCount = (signed int)std::max(
 			m_Position ? m_Position->size() : 0, 
 			std::max(m_Coords ? m_Coords->size() : 0, 
 			m_Color ? m_Color->size() : 0)
@@ -240,7 +259,7 @@ void Mesh2D::upload(void)
 	if(m_elemCount <= 0)
 	{
 		idxSize = m_Indices ? m_Indices->size() * sizeof(uint16_t) : 0;
-		m_elemCount = m_Indices ? -m_Indices->size() / 3 : 0;
+		m_elemCount = m_Indices ? -(signed int)m_Indices->size() / 3 : 0;
 	}
 	else
 		idxSize = m_elemCount * sizeof(uint16_t) * 3;
@@ -251,20 +270,20 @@ void Mesh2D::upload(void)
 	this->m_flags |= UPLOADED;
 }
 
-void Mesh2D::draw(DrawEnv * env)
+void Mesh2D::draw(Mesh2DRenderer *renderer, DrawEnv * env)
 {
 	if(!isUploaded())
 		upload();
 
-	ICSS::Singleton<Mesh2DRenderer>::getInstance().draw(env, *this);
+	renderer->draw(env, *this);
 }
 
-void Mesh2D::draw(DrawEnv * env, const gles::GLShaderSet & shader, const ShaderAttributes & attr)
+void Mesh2D::draw(Mesh2DRenderer *renderer, DrawEnv * env, const gles::GLShaderSet & shader, const ShaderAttributes & attr)
 {
 	if (!isUploaded())
 		upload();
 
-	ICSS::Singleton<Mesh2DRenderer>::getInstance().draw(env, *this, shader, attr);
+	renderer->draw(env, *this, shader, attr);
 }
 
 void Mesh2D::bindVertBuf(void)
@@ -280,8 +299,9 @@ void Mesh2D::bindIdxBuf(void)
 
 void Mesh2D::checkUploaded(void)
 {
-	if(m_Position.unique() && m_Coords.unique() && m_Color.unique() && m_Indices.unique())
-		m_flags |= UPLOADED;
-	else
+	if(!((m_flags & ATTR_POSITION) == 0 || m_Position.unique())
+		&& ((m_flags & ATTR_COORD) == 0 || m_Coords.unique())
+		&& ((m_flags & ATTR_COLOR) == 0 || m_Color.unique())
+		&& ((m_flags & ATTR_INDEX) == 0 || m_Indices.unique()))
 		m_flags &= ~UPLOADED;
 }

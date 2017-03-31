@@ -1,9 +1,33 @@
+/*
+(c) 2016,2017 Grain
+
+This file is part of ICSEdit.
+
+ICSEdit is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ICSEdit is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #pragma once
-#include "pch.h"
 
 namespace ICSS{
 namespace graphics{
 namespace gles{
+
+	enum class GLVBOTarget
+	{
+		ARRAY_BUFFER = GL_ARRAY_BUFFER,
+		ELEMENT_ARRAY_BUFFER = GL_ELEMENT_ARRAY_BUFFER
+	};
 
 	class GLVBO {
 		GLuint m_buffer;
@@ -14,8 +38,8 @@ namespace gles{
 
 	public:
 		GLVBO(void);
-		GLVBO(GLenum target, GLenum usage);
-		GLVBO(GLenum target, GLsizeiptr size, GLenum usage);
+		GLVBO(GLVBOTarget target, GLenum usage);
+		GLVBO(GLVBOTarget target, GLsizeiptr size, GLenum usage);
 		~GLVBO(void);
 
 		GLVBO(const GLVBO &vbo) = delete;
@@ -72,6 +96,7 @@ namespace gles{
 		}
 		void uploadDataRange(GLsizeiptr size, const GLvoid * data, GLuint offset);
 
+		GLuint handle(void) const { return this->m_buffer; }
 		GLsizeiptr size(void) const { return this->m_size; }
 		void extend(GLsizeiptr size, bool preserve = false);
 		void updateUsage(GLenum usage) { this->m_usage = usage; }

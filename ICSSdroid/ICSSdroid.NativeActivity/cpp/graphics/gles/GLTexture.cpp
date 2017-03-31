@@ -1,4 +1,22 @@
-#include "pch.h"
+/*
+(c) 2016,2017 Grain
+
+This file is part of ICSEdit.
+
+ICSEdit is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ICSEdit is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "graphics/gles/GLTexture.h"
 
 using ICSS::graphics::gles::GLTexture;
@@ -50,7 +68,9 @@ bool ICSS::graphics::gles::GLTexture::uploadImage(const file::ImageFile & img)
 		return false;
 
     assert(img.getChannelCount() - 3 ==0 || img.getChannelCount() - 3 == 1);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.getX(), img.getY(), 0, glChannelFormat[img.getChannelCount() - 3], GL_UNSIGNED_BYTE, img.getPixels());
+	glGetError();
+	bind();
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.getX(), img.getY(), 0, GL_RGBA/*glChannelFormat[img.getChannelCount() - 3]*/, GL_UNSIGNED_BYTE, img.getPixels());
 	GLenum err = glGetError();
 	if (err != GL_NO_ERROR)
 		throw std::runtime_error("glTexImage2D failed.Error:%d" + std::to_string(err) + FILE_FUNC_SIG);
@@ -61,6 +81,18 @@ bool ICSS::graphics::gles::GLTexture::uploadImage(const file::ImageFile & img)
 bool ICSS::graphics::gles::GLTexture::uploadImage(const file::ImageFile & img, GLint internalFormat, GLenum format, GLenum type)
 {
 	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, img.getX(), img.getY(), 0, format, type, img.getPixels());
+	GLenum err = glGetError();
+	if (err != GL_NO_ERROR)
+		throw std::runtime_error("glTexImage2D failed.Error:%d" + std::to_string(err) + FILE_FUNC_SIG);
+
+	return true;
+}
+
+bool ICSS::graphics::gles::GLTexture::uploadImage(const char * pixels, int width, int height, GLint internalFormat, GLenum format, GLenum type)
+{
+	glGetError();
+	bind();
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, type, pixels);
 	GLenum err = glGetError();
 	if (err != GL_NO_ERROR)
 		throw std::runtime_error("glTexImage2D failed.Error:%d" + std::to_string(err) + FILE_FUNC_SIG);

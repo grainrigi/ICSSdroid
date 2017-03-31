@@ -17,19 +17,17 @@ You should have received a copy of the GNU General Public License
 along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
-#include "graphics/DrawEnv.h"
+#include "graphics/gles/GLHandler.h"
 
-namespace ICSS{
-namespace graphics{
+using namespace ICSS::graphics::gles;
 
-	class IPrimitive {
-	public:
-		virtual void draw(DrawEnv *env) = 0;
-		virtual ~IPrimitive(void){};
-		IPrimitive(void) {};
-	protected:
-	};
-
+ICSS::graphics::gles::GLHandler::GLHandler(void)
+	: m_window()
+{
+	//__asm {int 3};
 }
+
+void ICSS::graphics::gles::GLHandler::initGL(void)
+{
+	
 }

@@ -17,19 +17,4 @@ You should have received a copy of the GNU General Public License
 along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
-#include "graphics/DrawEnv.h"
 
-namespace ICSS{
-namespace graphics{
-
-	class IPrimitive {
-	public:
-		virtual void draw(DrawEnv *env) = 0;
-		virtual ~IPrimitive(void){};
-		IPrimitive(void) {};
-	protected:
-	};
-
-}
-}

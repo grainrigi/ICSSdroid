@@ -237,7 +237,7 @@ private:
 		attr.attr_uv = 1;
 		attr.attr_color = -1;
 
-		mesh_.draw(&env, shader_, attr);
+		mesh_.draw(ICSS::Singleton<Mesh2DRenderer>::getInstancePtr(), &env, shader_, attr);
 	}
 };
 

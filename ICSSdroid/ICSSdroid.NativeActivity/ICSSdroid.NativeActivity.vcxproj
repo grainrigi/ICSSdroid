@@ -236,8 +236,17 @@
     <ClInclude Include="include\graphics\gles\GLVBO.h" />
     <ClInclude Include="include\graphics\GraphicsManager.h" />
     <ClInclude Include="include\graphics\IPrimitive.h" />
+    <ClInclude Include="include\graphics\MemCanvas.h" />
+    <ClInclude Include="include\graphics\MemCanvasA8.h" />
+    <ClInclude Include="include\graphics\MemCanvasRenderer.h" />
+    <ClInclude Include="include\graphics\MemCanvasRenderTexturePool.h" />
+    <ClInclude Include="include\graphics\MemCanvasRGBA8.h" />
+    <ClInclude Include="include\graphics\MemSubCanvasA8.h" />
+    <ClInclude Include="include\graphics\MemSubCanvasRGBA8.h" />
+    <ClInclude Include="include\graphics\MemTexturedCanvasRGBA8.h" />
     <ClInclude Include="include\graphics\Mesh2D.h" />
     <ClInclude Include="include\graphics\Mesh2DRenderer.h" />
+    <ClInclude Include="include\graphics\vmath.h" />
     <ClInclude Include="include\input\InputManager.h" />
     <ClInclude Include="include\input\InputParam.h" />
     <ClInclude Include="include\input\touch\TouchNotifyParam.h" />
@@ -255,18 +264,29 @@
     <ClInclude Include="include\util\threading\LockFreeQueue32.h" />
     <ClInclude Include="include\util\threading\LockFreeQueue8.h" />
     <ClInclude Include="include\util\threading\Thread.h" />
+    <ClInclude Include="include\wnd\BoundingBox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\android\android_native_app_glue.c" />
     <ClCompile Include="cpp\android\Asset.cpp" />
     <ClCompile Include="cpp\android\AssetManager.cpp" />
     <ClCompile Include="cpp\android\GlueHandler.cpp" />
+    <ClCompile Include="cpp\graphics\DrawEnv.cpp" />
     <ClCompile Include="cpp\graphics\gles\GLESVersion.cpp" />
     <ClCompile Include="cpp\graphics\gles\GLShaderSet.cpp" />
     <ClCompile Include="cpp\graphics\gles\GLTexture.cpp" />
     <ClCompile Include="cpp\graphics\gles\GLVBO.cpp" />
+    <ClCompile Include="cpp\graphics\MemCanvas.cpp" />
+    <ClCompile Include="cpp\graphics\MemCanvasA8.cpp" />
+    <ClCompile Include="cpp\graphics\MemCanvasRenderer.cpp" />
+    <ClCompile Include="cpp\graphics\MemCanvasRenderTexturePool.cpp" />
+    <ClCompile Include="cpp\graphics\MemCanvasRGBA8.cpp" />
+    <ClCompile Include="cpp\graphics\MemSubCanvasA8.cpp" />
+    <ClCompile Include="cpp\graphics\MemSubCanvasRGBA8.cpp" />
+    <ClCompile Include="cpp\graphics\MemTexturedCanvasRGBA8.cpp" />
     <ClCompile Include="cpp\graphics\Mesh2D.cpp" />
     <ClCompile Include="cpp\graphics\Mesh2DRenderer.cpp" />
+    <ClCompile Include="cpp\graphics\vmath.cpp" />
     <ClCompile Include="cpp\input\InputManager.cpp" />
     <ClCompile Include="cpp\input\touch\TouchSensor.cpp" />
     <ClCompile Include="cpp\main.cpp" />
@@ -274,7 +294,7 @@
     <ClCompile Include="cpp\util\file\BinaryFile.cpp" />
     <ClCompile Include="cpp\util\file\ImageFile.cpp" />
     <ClCompile Include="cpp\util\file\stb_image.c" />
-    <ClCompile Include="include\graphics\DrawEnv.cpp" />
+    <ClCompile Include="cpp\wnd\BoundingBox.cpp" />
     <ClCompile Include="include\util\container\Uint8Array.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

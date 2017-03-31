@@ -1,4 +1,22 @@
-#include "pch.h"
+/*
+(c) 2016,2017 Grain
+
+This file is part of ICSEdit.
+
+ICSEdit is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ICSEdit is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "graphics/Mesh2DRenderer.h"
 
 using namespace ICSS::graphics;
@@ -13,6 +31,7 @@ void ICSS::graphics::Mesh2DRenderer::draw(DrawEnv * env, Mesh2D & mesh)
 {
 	if(mesh.positionOffset() == -1)
 		return;
+	env->setShader(m_shader_tex);
 
 	mesh.bindVertBuf();
 	
@@ -28,7 +47,7 @@ void ICSS::graphics::Mesh2DRenderer::draw(DrawEnv * env, Mesh2D & mesh)
 	//use color
 	else if(mesh.colorOffset() != -1) {
 		env->setShader(m_shader_vc);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)mesh.positionOffset());
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)(mesh.positionOffset()));
 		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid*)mesh.colorOffset());
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
@@ -98,40 +117,48 @@ void ICSS::graphics::Mesh2DRenderer::draw(DrawEnv * env, Mesh2D & mesh, const gl
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, mesh.vertCount());
 }
 
-ICSS::graphics::Mesh2DRenderer::Mesh2DRenderer(void)
+ICSS::graphics::Mesh2DRenderer::Mesh2DRenderer(bool init)
 {
-	this->initShader();
+	if(init)
+		this->initShader();
+}
+
+void ICSS::graphics::Mesh2DRenderer::LateInitialize(void)
+{
+	initShader();
 }
 
 void ICSS::graphics::Mesh2DRenderer::initShader(void)
 {
 	std::string vShader_tex{ 
-		"attribute mediump vec4 attr_pos; "
-		"attribute mediump vec2 attr_uv;"
-		"varying mediump vec2 vary_uv;"
+		//"#version 120\n"
+		"attribute vec4 attr_pos; "
+		"attribute vec2 attr_uv;"
+		"varying vec2 vary_uv;"
 		"void main(){"
 		"  gl_Position = attr_pos;"
 		"  vary_uv = attr_uv;"
 		"}" };
 	std::string fShader_tex{
+		//"#version 120\n"
 		"uniform sampler2D unif_texture;"
-		"varying mediump vec2 vary_uv;"
-		"precision mediump float;"
+		"varying vec2 vary_uv;"
 		"void main(){"
 		"  gl_FragColor = texture2D(unif_texture, vary_uv);"
 		"}" };
 
 	std::string vShader_vc{
-		"attribute mediump vec4 attr_pos; "
-		"attribute mediump vec4 attr_color;"
-		"varying mediump vec4 vary_color;"
+		//"#version 120\n"
+		"attribute vec4 attr_pos; "
+		"attribute vec4 attr_color;"
+		"varying vec4 vary_color;"
 		"void main(){"
 		"  gl_Position = attr_pos;"
 		"  vary_color = attr_color;"
 		"}" };
 	std::string fShader_vc{
-		"varying mediump vec4 vary_color;"
-		"precision mediump float;"
+		//"#version 120\n"
+		"varying vec4 vary_color;"
 		"void main(){"
 		"  gl_FragColor = vary_color;"
 		"}" };

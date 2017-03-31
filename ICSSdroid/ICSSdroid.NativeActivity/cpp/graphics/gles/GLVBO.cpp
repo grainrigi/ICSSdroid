@@ -1,7 +1,26 @@
-#include "pch.h"
+/*
+(c) 2016,2017 Grain
+
+This file is part of ICSEdit.
+
+ICSEdit is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ICSEdit is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "graphics/gles/GLVBO.h"
 
 using ICSS::graphics::gles::GLVBO;
+using ICSS::graphics::gles::GLVBOTarget;
 
 ICSS::graphics::gles::GLVBO::GLVBO(void)
 	: m_buffer(0),
@@ -12,9 +31,9 @@ ICSS::graphics::gles::GLVBO::GLVBO(void)
 {
 }
 
-GLVBO::GLVBO(GLenum target, GLenum usage)
+GLVBO::GLVBO(GLVBOTarget target, GLenum usage)
 	: m_buffer(0),
-	m_target(target),
+	m_target((GLenum)target),
 	m_size(0),
 	m_usage(usage),
 	m_isMapping(false)
@@ -24,9 +43,9 @@ GLVBO::GLVBO(GLenum target, GLenum usage)
 		throw std::runtime_error("glGenBuffers() failed.");
 }
 
-GLVBO::GLVBO(GLenum target, GLsizeiptr size, GLenum usage)
+GLVBO::GLVBO(GLVBOTarget target, GLsizeiptr size, GLenum usage)
 	: m_buffer(0),
-	m_target(target),
+	m_target((GLenum)target),
 	m_size(size),
 	m_usage(usage),
 	m_isMapping(false)
@@ -73,10 +92,12 @@ void GLVBO::uploadData(GLsizeiptr size, const GLvoid * data)
 		glBindBuffer(m_target, m_buffer);
 		glBufferData(m_target, size, data, m_usage);
 		this->m_size = size;
+		glBindBuffer(m_target, 0);
 	}
 	else {
 		glBindBuffer(m_target, m_buffer);
 		glBufferSubData(m_target, 0, size, data);
+		glBindBuffer(m_target, 0);
 	}
 }
 
@@ -86,6 +107,7 @@ void GLVBO::uploadDataRange(GLsizeiptr size, const GLvoid * data, GLuint offset)
 
 	glBindBuffer(m_target, m_buffer);
 	glBufferSubData(m_target, offset, size, data);
+	glBindBuffer(m_target, 0);
 }
 
 void GLVBO::extend(GLsizeiptr size, bool preserve)
@@ -114,6 +136,7 @@ void GLVBO::extend(GLsizeiptr size, bool preserve)
 		delete buf;
 	}
 	*/
+	glBindBuffer(m_target, 0);
 
 	this->m_size = size;
 }
@@ -159,8 +182,11 @@ void GLVBO::bind(void)
 	if(m_isMapping)
 		this->unmap();
 		*/
-
+	glGetError();
 	glBindBuffer(m_target, m_buffer);
+	GLenum err = glGetError();
+	if (err != 0)
+		throw std::runtime_error("glBindBuffer failed.");
 }
 
 

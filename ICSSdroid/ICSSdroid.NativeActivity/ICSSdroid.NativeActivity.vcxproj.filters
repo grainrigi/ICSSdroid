@@ -1,6 +1,186 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{20975c09-9558-4a0b-bf42-25326ee3a5a0}</UniqueIdentifier>
+      <Extensions>*.h</Extensions>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{c51ddc31-70c1-46f9-a548-6120dafd1257}</UniqueIdentifier>
+      <Extensions>*.cpp</Extensions>
+    </Filter>
+    <Filter Include="Headers\android">
+      <UniqueIdentifier>{b5396b3c-6cfe-40a2-9150-352c666622c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\game">
+      <UniqueIdentifier>{394db2f5-7527-4f7f-905a-dcb29b4e7e62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\game\scene">
+      <UniqueIdentifier>{1a183a1f-a444-4f89-853e-dbcd8224e039}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\graphics">
+      <UniqueIdentifier>{c5ac598d-8a77-4f7a-8cdd-f3e998f1c98c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\input">
+      <UniqueIdentifier>{cdda1152-b53f-4553-8a80-505df95008aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\util">
+      <UniqueIdentifier>{7341d0ab-ba42-4ac8-9174-7bbabb8822a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\input\touch">
+      <UniqueIdentifier>{4a90a523-496f-4a07-a808-886e01893d38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\util\basic">
+      <UniqueIdentifier>{83fae98b-628f-43ef-889d-f27dd2474b95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\util\threading">
+      <UniqueIdentifier>{aa6af668-8ab5-4d81-81ee-6fe66033f816}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\android">
+      <UniqueIdentifier>{9e12bf47-b194-4500-bd42-72200bade78e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\game">
+      <UniqueIdentifier>{308fb4b4-3ed4-47d7-9290-92848b8fcacd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\game\scene">
+      <UniqueIdentifier>{9e299d2c-95e1-4718-be94-5d0f0475b433}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\graphics">
+      <UniqueIdentifier>{7d3a93a2-20d3-46e7-ab70-d3e1d54356e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\input">
+      <UniqueIdentifier>{02e19a4e-1c84-4e04-bc31-9c082b534905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\util">
+      <UniqueIdentifier>{3e5ef1d9-8eb2-4a1f-98a9-ee0418939d96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\input\touch">
+      <UniqueIdentifier>{230f81e8-e937-4b76-9340-b88525bc3661}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\util\basic">
+      <UniqueIdentifier>{b3ffa5cb-bbfe-4d1e-a7eb-080eafe49e0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\util\threading">
+      <UniqueIdentifier>{fef43c6b-8a2e-47a5-bcb0-57dff468ea1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\graphics\gles2">
+      <UniqueIdentifier>{a065d216-f053-4b8b-8d87-1db52f271c50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\graphics\gles">
+      <UniqueIdentifier>{37381096-e40e-4574-a0bd-56a93bda07fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\graphics\gles">
+      <UniqueIdentifier>{00ac6933-c889-415b-84a2-f1b72a03e15f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\util\file">
+      <UniqueIdentifier>{1a573836-4335-4c7b-9c1f-d0ebf1d9bb6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\util\file">
+      <UniqueIdentifier>{5af26c3b-48e0-4587-b483-fc7078e1cc73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\util\container">
+      <UniqueIdentifier>{2b0ef5da-fc97-4430-a1df-77722d855e00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\util\container">
+      <UniqueIdentifier>{61fc5a84-671d-446d-89cd-725874752cef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\wnd">
+      <UniqueIdentifier>{5819fb50-450a-4abb-bad4-f0e99726a398}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\wnd">
+      <UniqueIdentifier>{a560ac08-9c0c-4560-b64e-70326c748156}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cpp\android\android_native_app_glue.c">
+      <Filter>Sources\android</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\android\GlueHandler.cpp">
+      <Filter>Sources\android</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\input\InputManager.cpp">
+      <Filter>Sources\input</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\main.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\input\touch\TouchSensor.cpp">
+      <Filter>Sources\input\touch</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\gles\GLESVersion.cpp">
+      <Filter>Sources\graphics\gles</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\gles\GLShaderSet.cpp">
+      <Filter>Sources\graphics\gles</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\android\AssetManager.cpp">
+      <Filter>Sources\android</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\util\file\stb_image.c">
+      <Filter>Sources\util\file</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\android\Asset.cpp">
+      <Filter>Sources\android</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\util\file\BinaryFile.cpp">
+      <Filter>Sources\util\file</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\util\file\ImageFile.cpp">
+      <Filter>Sources\util\file</Filter>
+    </ClCompile>
+    <ClCompile Include="include\util\container\Uint8Array.cpp">
+      <Filter>Sources\util\container</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\gles\GLVBO.cpp">
+      <Filter>Sources\graphics\gles</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\Mesh2D.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\Mesh2DRenderer.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\gles\GLTexture.cpp">
+      <Filter>Sources\graphics\gles</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\util\basic\std_string_org.cpp">
+      <Filter>Sources\util\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\MemCanvas.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\MemCanvasA8.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\MemCanvasRenderer.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\MemCanvasRenderTexturePool.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\MemCanvasRGBA8.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\MemSubCanvasA8.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\MemSubCanvasRGBA8.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\MemTexturedCanvasRGBA8.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\vmath.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\DrawEnv.cpp">
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\wnd\BoundingBox.cpp">
+      <Filter>Sources\wnd</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="include\android\android_native_app_glue.h">
       <Filter>Headers\android</Filter>
     </ClInclude>
@@ -109,147 +289,35 @@
     <ClInclude Include="include\graphics\BillBoard2D.h">
       <Filter>Headers\graphics</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="cpp\android\android_native_app_glue.c">
-      <Filter>Sources\android</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\android\GlueHandler.cpp">
-      <Filter>Sources\android</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\input\InputManager.cpp">
-      <Filter>Sources\input</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\main.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\input\touch\TouchSensor.cpp">
-      <Filter>Sources\input\touch</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\graphics\gles\GLESVersion.cpp">
-      <Filter>Sources\graphics\gles</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\graphics\gles\GLShaderSet.cpp">
-      <Filter>Sources\graphics\gles</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\android\AssetManager.cpp">
-      <Filter>Sources\android</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\util\file\stb_image.c">
-      <Filter>Sources\util\file</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\android\Asset.cpp">
-      <Filter>Sources\android</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\util\file\BinaryFile.cpp">
-      <Filter>Sources\util\file</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\util\file\ImageFile.cpp">
-      <Filter>Sources\util\file</Filter>
-    </ClCompile>
-    <ClCompile Include="include\util\container\Uint8Array.cpp">
-      <Filter>Sources\util\container</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\graphics\gles\GLVBO.cpp">
-      <Filter>Sources\graphics\gles</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\graphics\Mesh2D.cpp">
-      <Filter>Sources\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="include\graphics\DrawEnv.cpp" />
-    <ClCompile Include="cpp\graphics\Mesh2DRenderer.cpp">
-      <Filter>Sources\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\graphics\gles\GLTexture.cpp">
-      <Filter>Sources\graphics\gles</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\util\basic\std_string_org.cpp">
-      <Filter>Sources\util\basic</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Headers">
-      <UniqueIdentifier>{20975c09-9558-4a0b-bf42-25326ee3a5a0}</UniqueIdentifier>
-      <Extensions>*.h</Extensions>
-    </Filter>
-    <Filter Include="Sources">
-      <UniqueIdentifier>{c51ddc31-70c1-46f9-a548-6120dafd1257}</UniqueIdentifier>
-      <Extensions>*.cpp</Extensions>
-    </Filter>
-    <Filter Include="Headers\android">
-      <UniqueIdentifier>{b5396b3c-6cfe-40a2-9150-352c666622c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\game">
-      <UniqueIdentifier>{394db2f5-7527-4f7f-905a-dcb29b4e7e62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\game\scene">
-      <UniqueIdentifier>{1a183a1f-a444-4f89-853e-dbcd8224e039}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\graphics">
-      <UniqueIdentifier>{c5ac598d-8a77-4f7a-8cdd-f3e998f1c98c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\input">
-      <UniqueIdentifier>{cdda1152-b53f-4553-8a80-505df95008aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\util">
-      <UniqueIdentifier>{7341d0ab-ba42-4ac8-9174-7bbabb8822a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\input\touch">
-      <UniqueIdentifier>{4a90a523-496f-4a07-a808-886e01893d38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\util\basic">
-      <UniqueIdentifier>{83fae98b-628f-43ef-889d-f27dd2474b95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\util\threading">
-      <UniqueIdentifier>{aa6af668-8ab5-4d81-81ee-6fe66033f816}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\android">
-      <UniqueIdentifier>{9e12bf47-b194-4500-bd42-72200bade78e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\game">
-      <UniqueIdentifier>{308fb4b4-3ed4-47d7-9290-92848b8fcacd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\game\scene">
-      <UniqueIdentifier>{9e299d2c-95e1-4718-be94-5d0f0475b433}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\graphics">
-      <UniqueIdentifier>{7d3a93a2-20d3-46e7-ab70-d3e1d54356e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\input">
-      <UniqueIdentifier>{02e19a4e-1c84-4e04-bc31-9c082b534905}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\util">
-      <UniqueIdentifier>{3e5ef1d9-8eb2-4a1f-98a9-ee0418939d96}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\input\touch">
-      <UniqueIdentifier>{230f81e8-e937-4b76-9340-b88525bc3661}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\util\basic">
-      <UniqueIdentifier>{b3ffa5cb-bbfe-4d1e-a7eb-080eafe49e0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\util\threading">
-      <UniqueIdentifier>{fef43c6b-8a2e-47a5-bcb0-57dff468ea1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\graphics\gles2">
-      <UniqueIdentifier>{a065d216-f053-4b8b-8d87-1db52f271c50}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\graphics\gles">
-      <UniqueIdentifier>{37381096-e40e-4574-a0bd-56a93bda07fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\graphics\gles">
-      <UniqueIdentifier>{00ac6933-c889-415b-84a2-f1b72a03e15f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\util\file">
-      <UniqueIdentifier>{1a573836-4335-4c7b-9c1f-d0ebf1d9bb6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\util\file">
-      <UniqueIdentifier>{5af26c3b-48e0-4587-b483-fc7078e1cc73}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\util\container">
-      <UniqueIdentifier>{2b0ef5da-fc97-4430-a1df-77722d855e00}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\util\container">
-      <UniqueIdentifier>{61fc5a84-671d-446d-89cd-725874752cef}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="include\graphics\MemCanvas.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\MemCanvasA8.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\MemCanvasRenderer.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\MemCanvasRenderTexturePool.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\MemCanvasRGBA8.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\MemSubCanvasA8.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\MemSubCanvasRGBA8.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\MemTexturedCanvasRGBA8.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\vmath.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\wnd\BoundingBox.h">
+      <Filter>Headers\wnd</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

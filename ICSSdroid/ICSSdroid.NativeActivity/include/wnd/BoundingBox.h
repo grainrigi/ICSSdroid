@@ -1,4 +1,4 @@
-/*
+/* 
 (c) 2016,2017 Grain
 
 This file is part of ICSEdit.
@@ -18,17 +18,31 @@ along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
-#include "graphics/DrawEnv.h"
 
-namespace ICSS{
-namespace graphics{
+namespace ICSS {
+namespace wnd {
 
-	class IPrimitive {
+	class BoundingBox {
+		int x, y;
+		int w, h;
 	public:
-		virtual void draw(DrawEnv *env) = 0;
-		virtual ~IPrimitive(void){};
-		IPrimitive(void) {};
-	protected:
+		BoundingBox(void);
+		BoundingBox(int x, int y, int w, int h);
+
+		int GetX(void) const { return x; }
+		int GetY(void) const { return y; }
+		int GetWidth(void) const { return w; }
+		int GetHeight(void) const { return h; }
+
+		void SetX(int nx) { x = nx; }
+		void SetY(int ny) { y = ny; }
+		void SetWidth(int nw);
+		void SetHeight(int nh);
+
+		bool isIncludePoint(int x, int y) const;
+		
+	private:
+		
 	};
 
 }
