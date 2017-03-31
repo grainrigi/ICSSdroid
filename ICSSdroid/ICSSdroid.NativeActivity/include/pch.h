@@ -8,7 +8,6 @@
 //
 
 
-
 #include <jni.h>
 #include <errno.h>
 
@@ -17,8 +16,9 @@
 #include <sys/resource.h>
 
 #include <EGL/egl.h>
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
+
+#include <GLES3/gl3.h>
+#include <SLES/OpenSLES.h>
 
 #include <android/sensor.h>
 
@@ -38,6 +38,8 @@
 #include <atomic>
 #include <mutex>
 #include <algorithm>
+#include <cassert>
+#include "util/basic/std_string_org.h"
 
 #define DO_LOG
 
@@ -51,3 +53,9 @@
 #define LOGE(...)
 #endif
 
+
+
+
+
+#define FILE_SIG ("(at " + std::string(__FILE__) + ":" + std::to_string(__LINE__) + ")")
+#define FILE_FUNC_SIG ("(at " + std::string(__FILE__) + ":" + std::to_string(__LINE__) + " " + std::string(__func__) + "())")

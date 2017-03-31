@@ -23,6 +23,11 @@ namespace gles {
 		GLuint vShader(void) const { return m_vShader; }
 		GLuint fShader(void) const { return m_fShader; }
 
+		void use(void) { glUseProgram(m_program); }
+
+		GLint getAttribLocation(const std::string &str) const { return glGetAttribLocation(m_program, str.c_str()); }
+		GLint getUniformLocation(const std::string &str) const { return glGetUniformLocation(m_program, str.c_str()); }
+
 		bool operator==(const GLShaderSet &set) { return m_program == set.m_program; }
 	private:
 		GLuint createShader(GLenum type, const std::string &src);

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include "util/file/stb_image.h"
 
@@ -8,8 +8,10 @@
 #include "graphics/gles/GLESVersion.h"
 #include "graphics/gles/GLShaderSet.h"
 #include "graphics/gles/GLVBO.h"
+#include "graphics/gles/GLTexture.h"
 #include "graphics/Mesh2D.h"
 #include "graphics/Mesh2DRenderer.h"
+#include "graphics/BillBoard2D.h"
 #include "util/threading/Thread.h"
 #include "input/InputManager.h"
 #include "util/threading/LockFreeQueue8.h"
@@ -22,8 +24,10 @@ using ICSS::android::Asset;
 using ICSS::graphics::gles::GLESVersionSingleton;
 using ICSS::graphics::gles::GLShaderSet;
 using ICSS::graphics::gles::GLVBO;
+using ICSS::graphics::gles::GLTexture;
 using ICSS::graphics::Mesh2D;
 using ICSS::graphics::Mesh2DRenderer;
+using ICSS::graphics::BillBoard2D;
 using ICSS::graphics::DrawEnv;
 using ICSS::input::InputManager;
 using ICSS::input::touch::TouchNotifyParam;
@@ -36,6 +40,14 @@ template<typename FunGetIv, typename FunGetLog>
 std::string getGLLogStr(GLuint obj, FunGetIv funGetIv, FunGetLog funGetLog);
 std::string getGLShaderLogInfo(GLuint obj);
 std::string getGLProgramLogInfo(GLuint obj);
+
+void createVpTrans(GLfloat *ary, float width, float height)
+{
+	ary[0] = 2.0f / width;
+	ary[1] = 2.0f / height;
+	ary[2] = 1.0f;
+	ary[3] = 1.0f;
+}
 
 GLuint loadShader(GLenum type, const char *shaderSrc)
 {
@@ -59,15 +71,19 @@ GLuint loadShader(GLenum type, const char *shaderSrc)
 	return shader;
 }
 
+void SoundPlay(void)
+{
+
+}
 
 /**
-* OpenGLES 2.0‚Ì‰Šú‰»‚©‚çƒtƒŒ[ƒ€ƒŒƒ“ƒ_ƒŠƒ“ƒO‚Ü‚Å‚ğƒJƒo[‚µ‚½ƒtƒŒ[ƒ€ƒ[ƒN‚Å‚·B
+* OpenGLES 2.0ã®åˆæœŸåŒ–ã‹ã‚‰ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã¾ã§ã‚’ã‚«ãƒãƒ¼ã—ãŸãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¯ãƒ¼ã‚¯ã§ã™ã€‚
 *
-* ‚±‚ÌƒNƒ‰ƒX‚ğŒp³‚µ‚Ä•K—v‚È‰¼‘zŠÖ”‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚Ä‚­‚¾‚³‚¢B
-* ƒŠƒ\[ƒX‚Ì“Ç‚İ‚İA‰ğ•ú‚ğs‚¤loadResources()AtermResources()‚âinitializeContextState()AƒtƒŒ[ƒ€‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO‚ğs‚¤drawFrame()‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚Ä‚­‚¾‚³‚¢B
+* ã“ã®ã‚¯ãƒ©ã‚¹ã‚’ç¶™æ‰¿ã—ã¦å¿…è¦ãªä»®æƒ³é–¢æ•°ã‚’ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã—ã¦ãã ã•ã„ã€‚
+* ãƒªã‚½ãƒ¼ã‚¹ã®èª­ã¿è¾¼ã¿ã€è§£æ”¾ã‚’è¡Œã†loadResources()ã€termResources()ã‚„initializeContextState()ã€ãƒ•ãƒ¬ãƒ¼ãƒ ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚’è¡Œã†drawFrame()ã‚’ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã—ã¦ãã ã•ã„ã€‚
 *
-* ‚»‚µ‚ÄƒlƒCƒeƒBƒuƒEƒBƒ“ƒhƒE(ANativeWindow *)‚ª—LŒø‚É‚È‚Á‚½“_‚ÅinitWindow()‚ğA–³Œø‚É‚È‚Á‚½“_‚ÅtermWindow()‚ğŒÄ‚Ño‚·‚æ‚¤‚É‚µ‚Ü‚·B
-* ƒEƒBƒ“ƒhƒE‚Ö‚Ì•`‰æ‚ª•K—v‚É‚È‚Á‚½“_‚ÅpresentFrame()‚ğŒÄ‚Ño‚µ‚Ä‚­‚¾‚³‚¢B
+* ãã—ã¦ãƒã‚¤ãƒ†ã‚£ãƒ–ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦(ANativeWindow *)ãŒæœ‰åŠ¹ã«ãªã£ãŸæ™‚ç‚¹ã§initWindow()ã‚’ã€ç„¡åŠ¹ã«ãªã£ãŸæ™‚ç‚¹ã§termWindow()ã‚’å‘¼ã³å‡ºã™ã‚ˆã†ã«ã—ã¾ã™ã€‚
+* ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ã®æç”»ãŒå¿…è¦ã«ãªã£ãŸæ™‚ç‚¹ã§presentFrame()ã‚’å‘¼ã³å‡ºã—ã¦ãã ã•ã„ã€‚
 */
 
 
@@ -75,9 +91,8 @@ GLuint loadShader(GLenum type, const char *shaderSrc)
 
 class ThisAppGraphics : public GLEnvironment
 {
-	GLint unif_tex_;
 	GLint unif_phase_;
-	GLuint texture_;
+	GLTexture texture_;
 	GLShaderSet shader_;
 	DrawEnv env_;
 	Mesh2D mesh_;
@@ -93,41 +108,51 @@ private:
 		LOGI("loadResources");
 
 		GLfloat vertices[]{
-			-0.5f, -0.5f, 0.0f,
-			-0.5f, 0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.5f, 0.5f, 0.0f
+			-300.0f, 300.0f, 0.0f,
+			-300.0f, -300.0f, 0.0f,
+			300.0f, 300.0f, 0.0f,
+			300.0f, -300.0f, 0.0f
 		};
-		GLfloat coords[]{
+		constexpr GLfloat coords[]{
 			0.0f, 0.0f,
 			0.0f, 1.0f,
 			1.0f, 0.0f,
 			1.0f, 1.0f
 		};
 		
-		GLfloat colors[]{
+		constexpr GLfloat colors[]{
 			PI / 2.0f, 0.0f, 0.0f, 1.0f,
 			0.0f, 0.0f, PI / 2.0f, 1.0f,
 			0.0f, PI / 2.0f, 0.0f, 1.0f,
 			PI / 2.0f, PI / 2.0f, 0.0f, 1.0f,
 		};
 
+		GLfloat vpTrans[4];
+		GLuint unif_vptrans;
+		GLuint unif_texture;
+
 		std::string vShader{
 			"uniform mediump float unif_phase;"
+			"uniform mediump vec4 unif_vptrans;"
 			"attribute mediump vec4 attr_pos; "
-			"attribute mediump vec4 attr_color;"
-			"varying mediump vec4 vary_color;"
+			"attribute mediump vec2 attr_uv;"
+			"varying mediump vec2 vary_uv;"
 			"void main(){"
-			"  gl_Position = attr_pos;"
+			"  gl_Position = attr_pos * unif_vptrans;"
+			"  vary_uv = attr_uv;"
+			"  vary_uv.x = vary_uv.x + sin(unif_phase);"
+			/*
 			"  vary_color = (sin(attr_color + unif_phase) + 1.0) * 0.5;"
 			"  vary_color.a = 1.0;"
+			*/
 			"}"
 		};
 		std::string fShader{
-			"varying mediump vec4 vary_color;"
+			"uniform sampler2D unif_texture;"
+			"varying mediump vec2 vary_uv;"
 			"precision mediump float;"
 			"void main(){"
-			"  gl_FragColor = vary_color;"
+			"  gl_FragColor = texture2D(unif_texture, vary_uv);"
 			"}"
 		};
 
@@ -137,31 +162,46 @@ private:
 				{ 0, "attr_pos" },
 				{ 1, "attr_color" },
 			});
-			unif_phase_ = glGetUniformLocation(shader_.program(), "unif_phase");
+			unif_phase_ = shader_.getUniformLocation("unif_phase");
+			unif_vptrans = shader_.getUniformLocation("unif_vptrans");
+			unif_texture = shader_.getUniformLocation("unif_texture");
+			shader_.use();
+			createVpTrans(vpTrans, (float)getScreenWidth(), (float)getScreenHeight());
+			glUniform4fv(unif_vptrans, 1, vpTrans);
+			glUniform1i(unif_texture, 0);
 		}
 		catch(std::runtime_error ex) {
 			LOGE("%s", ex.what());
-			return false;
+			throw;
 		}
  
 		//create texture
 		Asset texpng = AssetManagerSingleton::getInstance().loadAsset("ninapri.png");
 		ImageFile img = ImageFile::loadFromFile(texpng, ImageFile::FORMAT_RGBA);
-		glGenTextures(1, &texture_);
-		glBindTexture(GL_TEXTURE_2D, texture_);
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.getX(), img.getY(), 0, GL_RGBA, GL_UNSIGNED_BYTE, img.getPixels());
-		GLenum err = glGetError();
-		if(err != GL_NO_ERROR)
-			LOGE("glTexImage2D failed.Error:%d", err);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // Šg‘å‹ß–T
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // k¬‹ß–T
+		texture_.init();
+		texture_.uploadImage(img);
 		glEnable(GL_TEXTURE_2D);
 
-		mesh_ = Mesh2D(4 ,Mesh2D::ATTR_POSITION | Mesh2D::ATTR_COLOR, GL_STATIC_DRAW);
+		vertices[0] = vertices[3] = -(vertices[6] = vertices[9] = (float)538 / 2.0f);
+		vertices[4] = vertices[10] = -(vertices[1] = vertices[7] = (float)640 / 2.0f);
+
+		//create mesh
+		mesh_ = Mesh2D(4 ,Mesh2D::ATTR_POSITION | Mesh2D::ATTR_COORD, GL_STATIC_DRAW);
 		memcpy(&(*mesh_.positions())[0], vertices, sizeof(vertices));
-		memcpy(&(*mesh_.colors())[0], colors, sizeof(colors));
+		memcpy(&(*mesh_.coordinates())[0], coords, sizeof(coords));
 		mesh_.upload();
+
+		BillBoard2D bb;
+
+		GLuint fbo;
+		glGenFramebuffers(1, &fbo);
+
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+		glReadBuffer(GL_COLOR_ATTACHMENT0);
+		GLenum db = GL_BACK;
+		glDrawBuffers(1, &db);
+		glBlitFramebuffer(0, 0, 512, 512, 0, 0, 512, 512, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
 		return true;
 	}
@@ -169,10 +209,6 @@ private:
 	{
 		LOGI("unloadResources");
 		glBindTexture(GL_TEXTURE_2D, 0);
-
-		if(texture_) {
-			glDeleteTextures(1, &texture_);
-		}
 	}
 	virtual void initializeContextState() override
 	{
@@ -185,28 +221,198 @@ private:
 	{
 		//LOGI("drawFrame");
 		DrawEnv env;
-		Mesh2D::ShaderAttributes attr { 0, -1, 1 };
+		Mesh2D::ShaderAttributes attr;
 		static float phase = 0.0f;
 
 		phase += 0.1f;
 
-		glClearColor(0, 0, 0, 1);
+		glClearColor(0, 1, 1, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//glBindTexture(GL_TEXTURE_2D, texture_);
-		glUseProgram(shader_.program());
+		texture_.bind();
+		env.setShader(shader_);
 		glUniform1f(unif_phase_, phase);
+
+		attr.attr_pos = 0;
+		attr.attr_uv = 1;
+		attr.attr_color = -1;
 
 		mesh_.draw(&env, shader_, attr);
 	}
 };
 
+static constexpr int AUDIO_DATA_STORAGE_SIZE = 4096;
+static constexpr int AUDIO_DATA_BUFFER_COUNT = 8;
+static constexpr int AUDIO_DATA_BUFFER_SIZE = AUDIO_DATA_STORAGE_SIZE / AUDIO_DATA_BUFFER_COUNT;
+
+/* Structure for passing information to callback function */
+typedef struct CallbackCntxt_ {
+	SLPlayItf playItf;
+	SLint16* pDataBase; // Base adress of local audio data storage
+	SLint16* pData; // Current adress of local audio data storage
+	SLuint32 size;
+} CallbackCntxt;
+
+void CheckErr(SLresult res)
+{
+	if (res != SL_RESULT_SUCCESS)
+		throw std::runtime_error("SL_UNSUCCESS");
+}
+
+void BufferQueueCallback(
+	SLBufferQueueItf queueItf,
+	void *pContext
+)
+{
+	SLresult res;
+	CallbackCntxt *pCntxt = (CallbackCntxt*)pContext;
+	if (pCntxt->pData < (pCntxt->pDataBase + pCntxt->size))
+	{
+		res = (*queueItf)->Enqueue(queueItf, (void*)pCntxt->pData,
+			2 * AUDIO_DATA_BUFFER_SIZE);
+		if (res != SL_RESULT_SUCCESS)
+			throw std::runtime_error("SL_UNSCCESS");
+		pCntxt->pData += AUDIO_DATA_BUFFER_SIZE;
+	}
+}
+
 static void testThread(ICSS::threading::Thread *thr) {
-	//while(1) {
-		if(thr->isTerminating())
-			return;
-		//usleep(10000);
-	//}
+	SLObjectItf sl;
+	SLresult res;
+	SLEngineOption EngineOption[] = {
+		(SLuint32)SL_ENGINEOPTION_THREADSAFE,
+		(SLuint32)SL_BOOLEAN_TRUE };
+	res = slCreateEngine(&sl, 1, EngineOption, 0, NULL, NULL);
+	CheckErr(res);
+	/* Realizing the SL Engine in synchronous mode. */
+	res = (*sl)->Realize(sl, SL_BOOLEAN_FALSE); CheckErr(res);
+
+	auto wav = ICSS::android::AssetManagerSingleton::getInstance().loadAsset("wave.wav");
+
+	int size = wav.getSize();
+
+	SLEngineItf EngineItf;
+	SLint32 numOutputs = 0;
+	SLuint32 deviceID = 0;
+	
+	SLDataSource audioSource;
+	SLDataLocator_BufferQueue bufferQueue;
+	SLDataFormat_PCM pcm;
+	SLDataSink audioSink;
+	SLDataLocator_OutputMix locator_outputmix;
+	SLObjectItf player;
+	SLPlayItf playItf;
+	SLBufferQueueItf bufferQueueItf;
+	SLBufferQueueState state;
+	SLObjectItf OutputMix;
+	//SLVolumeItf volumeItf;
+	int i;
+
+	SLboolean required[3];
+	SLInterfaceID iidArray[3];
+	/* Callback context for the buffer queue callback function */
+	CallbackCntxt cntxt;
+	/* Get the SL Engine Interface which is implicit */
+	res = (*sl)->GetInterface(sl, SL_IID_ENGINE, (void*)&EngineItf);
+	
+
+	/* Initialize arrays required[] and iidArray[] */
+
+	for (i = 0; i<3; i++)
+	{
+		required[i] = SL_BOOLEAN_FALSE;
+		iidArray[i] = SL_IID_NULL;
+	}
+	// Set arrays required[] and iidArray[] for VOLUME interface
+	required[0] = SL_BOOLEAN_TRUE;
+	iidArray[0] = SL_IID_VOLUME;
+	// Create Output Mix object to be used by player
+	res = (*EngineItf)->CreateOutputMix(EngineItf, &OutputMix, 0,
+		NULL, NULL); //CheckErr(res);
+	// Realizing the Output Mix object in synchronous mode.
+	res = (*OutputMix)->Realize(OutputMix, SL_BOOLEAN_FALSE);
+	CheckErr(res);
+	//res = (*OutputMix)->GetInterface(OutputMix, SL_IID_VOLUME,
+		//(void*)&volumeItf); CheckErr(res);
+	/* Setup the data source structure for the buffer queue */
+	bufferQueue.locatorType = SL_DATALOCATOR_BUFFERQUEUE;
+	bufferQueue.numBuffers = 4; /* Four buffers in our buffer queue */
+
+								/* Setup the format of the content in the buffer queue */
+	pcm.formatType = SL_DATAFORMAT_PCM;
+	pcm.numChannels = 2;
+	pcm.samplesPerSec = SL_SAMPLINGRATE_44_1;
+	pcm.bitsPerSample = SL_PCMSAMPLEFORMAT_FIXED_16;
+	pcm.containerSize = 16;
+	pcm.channelMask = SL_SPEAKER_FRONT_LEFT | SL_SPEAKER_FRONT_RIGHT;
+	pcm.endianness = SL_BYTEORDER_LITTLEENDIAN;
+	audioSource.pFormat = (void *)&pcm;
+	audioSource.pLocator = (void *)&bufferQueue;
+	/* Setup the data sink structure */
+	locator_outputmix.locatorType = SL_DATALOCATOR_OUTPUTMIX;
+	locator_outputmix.outputMix = OutputMix;
+	audioSink.pLocator = (void *)&locator_outputmix;
+	audioSink.pFormat = NULL;
+	/* Initialize the context for Buffer queue callbacks */
+	cntxt.pDataBase = (SLint16*)wav.getData();
+	cntxt.pData = cntxt.pDataBase;
+	cntxt.size = size;
+	/* Set arrays required[] and iidArray[] for SEEK interface
+	(PlayItf is implicit) */
+	required[0] = SL_BOOLEAN_TRUE;
+	iidArray[0] = SL_IID_BUFFERQUEUE;
+	/* Create the music player */
+	res = (*EngineItf)->CreateAudioPlayer(EngineItf, &player,
+		&audioSource, &audioSink, 1, iidArray, required); CheckErr(res);
+	/* Realizing the player in synchronous mode. */
+	res = (*player)->Realize(player, SL_BOOLEAN_FALSE); CheckErr(res);
+	/* Get seek and play interfaces */
+	res = (*player)->GetInterface(player, SL_IID_PLAY, (void*)&playItf);
+	CheckErr(res);
+	res = (*player)->GetInterface(player, SL_IID_BUFFERQUEUE,
+		(void*)&bufferQueueItf); CheckErr(res);
+	/* Setup to receive buffer queue event callbacks */
+	res = (*bufferQueueItf)->RegisterCallback(bufferQueueItf,
+		BufferQueueCallback, &cntxt); CheckErr(res);
+	/* Before we start set volume to -3dB (-300mB) */
+	//res = (*volumeItf)->SetVolumeLevel(volumeItf, -300); CheckErr(res);
+	/* Enqueue a few buffers to get the ball rolling */
+	res = (*bufferQueueItf)->Enqueue(bufferQueueItf, cntxt.pData,
+		2 * AUDIO_DATA_BUFFER_SIZE); /* Size given in bytes. */
+	CheckErr(res);
+	cntxt.pData += AUDIO_DATA_BUFFER_SIZE;
+	res = (*bufferQueueItf)->Enqueue(bufferQueueItf, cntxt.pData,
+		2 * AUDIO_DATA_BUFFER_SIZE); /* Size given in bytes. */
+	CheckErr(res);
+	cntxt.pData += AUDIO_DATA_BUFFER_SIZE;
+	res = (*bufferQueueItf)->Enqueue(bufferQueueItf, cntxt.pData,
+		2 * AUDIO_DATA_BUFFER_SIZE); /* Size given in bytes. */
+	CheckErr(res);
+	cntxt.pData += AUDIO_DATA_BUFFER_SIZE;
+	/* Play the PCM samples using a buffer queue */
+	res = (*playItf)->SetPlayState(playItf, SL_PLAYSTATE_PLAYING);
+	CheckErr(res);
+	/* Wait until the PCM data is done playing, the buffer queue callback
+	will continue to queue buffers until the entire PCM data has been
+	played. This is indicated by waiting for the count member of the
+	SLBufferQueueState to go to zero.
+	*/
+	res = (*bufferQueueItf)->GetState(bufferQueueItf, &state);
+	CheckErr(res);
+
+	while (state.count)
+	{
+		if (thr->isTerminating())
+			break;
+		(*bufferQueueItf)->GetState(bufferQueueItf, &state);
+	}
+	/* Make sure player is stopped */
+	res = (*playItf)->SetPlayState(playItf, SL_PLAYSTATE_STOPPED);
+	CheckErr(res);
+	/* Destroy the player */
+	(*player)->Destroy(player);
+	/* Destroy Output Mix object */
+	(*OutputMix)->Destroy(OutputMix);
 }
 
 class ThisApp
@@ -266,7 +472,7 @@ private:
 			// Window
 			case APP_CMD_INIT_WINDOW:
 			{
-				ICSS::threading::Thread th(testThread, nullptr);
+				//ICSS::threading::Thread th(testThread, nullptr);
 				LOGI("handleCmd(APP_CMD_INIT_WINDOW)");
 				GLESVersionSingleton::create(app_->window);
 				LOGI("OpenGLES Version : %d", GLESVersionSingleton::getInstance().getGLESVersion());
@@ -276,7 +482,23 @@ private:
 					Singleton<Mesh2DRenderer>::create();
 					gl_.presentFrame(app_->window);
 				}
+				
+				//Get Context Class descriptor
+				JNIEnv *env;
+				app_->activity->vm->AttachCurrentThread(&env, NULL);
+				jclass contextClass = env->FindClass("android/content/Context");
+				jmethodID getExternalFilesDirMethodId = env->GetMethodID(contextClass, "getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;");
+				jstring getExternalType = env->NewStringUTF("");
+				jobject fileObject = env->CallObjectMethod(app_->activity->clazz, getExternalFilesDirMethodId, getExternalType);
+				jclass fileClass = env->FindClass("java/io/File");
+				jmethodID absolutePathMethodId = env->GetMethodID(fileClass, "getAbsolutePath", "()Ljava/lang/String;");
+				jstring stringObject = (jstring)env->CallObjectMethod(fileObject, absolutePathMethodId);
+				const char *str1 = env->GetStringUTFChars(stringObject, 0);
+				std::string str(str1);
+				env->ReleaseStringUTFChars(stringObject, str1);
 
+				app_->activity->vm->DetachCurrentThread();
+				
 				break;
 			}
 			case APP_CMD_TERM_WINDOW:
@@ -367,15 +589,15 @@ private:
 
 	int getNextEventDelayTimeMilli()
 	{
-		// ’x‚­‚Æ‚àˆê’èŠÔŒã‚Ü‚Å‚É processInEventLoop() ‚ªŒÄ‚Î‚ê‚é‚æ‚¤‚É‚·‚é‚É‚ÍA
-		// ‚±‚±‚Åƒ~ƒŠ•b‚ğ•Ô‚·B
-		// ‚»‚ê‚æ‚è‘‚¢ŠÔ‚ÅŒÄ‚Î‚ê‚é‚±‚Æ‚à‚ ‚éB
+		// é…ãã¨ã‚‚ä¸€å®šæ™‚é–“å¾Œã¾ã§ã« processInEventLoop() ãŒå‘¼ã°ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹ã«ã¯ã€
+		// ã“ã“ã§ãƒŸãƒªç§’ã‚’è¿”ã™ã€‚
+		// ãã‚Œã‚ˆã‚Šæ—©ã„æ™‚é–“ã§å‘¼ã°ã‚Œã‚‹ã“ã¨ã‚‚ã‚ã‚‹ã€‚
 		return 17;
 	}
 	void processInEventLoop()
 	{
-		// ‚È‚ñ‚ç‚©‚ÌƒCƒxƒ“ƒg‚ªˆ—‚³‚ê‚½Œã‚Ü‚½‚ÍA
-		// getNextEventDelayTimeMilli()‚ª•Ô‚µ‚½ŠÔŒo‰ß‚µ‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚éB
+		// ãªã‚“ã‚‰ã‹ã®ã‚¤ãƒ™ãƒ³ãƒˆãŒå‡¦ç†ã•ã‚ŒãŸå¾Œã¾ãŸã¯ã€
+		// getNextEventDelayTimeMilli()ãŒè¿”ã—ãŸæ™‚é–“çµŒéã—ãŸã¨ãã«å‘¼ã°ã‚Œã‚‹ã€‚
 		if(working)
 			gl_.presentFrame(app_->window);
 	}
@@ -388,7 +610,7 @@ private:
 	void processUserLooperId(int looperId)
 	{
 		LOGI("processUserLooperId looperId=%d", looperId);
-		// ƒ†[ƒU[’è‹`‚ÌLooper ID(LOOPER_ID_USERˆÈã‚Ì’l)‚ğ‚ÂƒCƒxƒ“ƒg‚ª”­¶‚µ‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚éB
+		// ãƒ¦ãƒ¼ã‚¶ãƒ¼å®šç¾©ã®Looper ID(LOOPER_ID_USERä»¥ä¸Šã®å€¤)ã‚’æŒã¤ã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿã—ãŸã¨ãã«å‘¼ã°ã‚Œã‚‹ã€‚
 	}
 
 

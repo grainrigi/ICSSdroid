@@ -212,7 +212,6 @@ uint32_t Mesh2D::indexSize(void) const
 void Mesh2D::upload(void)
 {
 	uint32_t posSize{0}, coordSize{0}, colorSize{0}, vertCount, idxSize;
-	uint32_t isize{0};
 
 	if(m_vertCount <= 0)
 		m_vertCount = -(vertCount = std::max(

@@ -154,7 +154,7 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
     </ClCompile>
     <Link>
-      <LibraryDependencies>%(LibraryDependencies);EGL;GLESv2;GLESv3;m</LibraryDependencies>
+      <LibraryDependencies>%(LibraryDependencies);EGL;GLESv2;GLESv3;m;OpenSLES</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -167,7 +167,7 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
     </ClCompile>
     <Link>
-      <LibraryDependencies>%(LibraryDependencies);EGL;GLESv2;GLESv3;m</LibraryDependencies>
+      <LibraryDependencies>%(LibraryDependencies);EGL;GLESv2;GLESv3;m;OpenSLES</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -219,20 +219,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="cpp\graphics\gles\GLExtention.h" />
     <ClInclude Include="include\android\android_native_app_glue.h" />
     <ClInclude Include="include\android\Asset.h" />
     <ClInclude Include="include\android\AssetManager.h" />
     <ClInclude Include="include\android\GlueHandler.h" />
     <ClInclude Include="include\game\scene\SceneManager.h" />
+    <ClInclude Include="include\graphics\BillBoard2D.h" />
     <ClInclude Include="include\graphics\DrawEnv.h" />
     <ClInclude Include="include\graphics\Geometry.h" />
     <ClInclude Include="include\graphics\GLEnvironment.h" />
     <ClInclude Include="include\graphics\gles\GLES2Handler.h" />
     <ClInclude Include="include\graphics\gles\GLESVersion.h" />
+    <ClInclude Include="include\graphics\gles\GLExtention.h" />
     <ClInclude Include="include\graphics\gles\GLShaderSet.h" />
+    <ClInclude Include="include\graphics\gles\GLTexture.h" />
     <ClInclude Include="include\graphics\gles\GLVBO.h" />
-    <ClInclude Include="include\graphics\GLTexture.h" />
     <ClInclude Include="include\graphics\GraphicsManager.h" />
     <ClInclude Include="include\graphics\IPrimitive.h" />
     <ClInclude Include="include\graphics\Mesh2D.h" />
@@ -244,6 +245,7 @@
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\util\basic\IDisposable.h" />
     <ClInclude Include="include\util\basic\Singleton.h" />
+    <ClInclude Include="include\util\basic\std_string_org.h" />
     <ClInclude Include="include\util\container\Uint8Array.h" />
     <ClInclude Include="include\util\file\BinaryFile.h" />
     <ClInclude Include="include\util\file\ImageFile.h" />
@@ -261,12 +263,14 @@
     <ClCompile Include="cpp\android\GlueHandler.cpp" />
     <ClCompile Include="cpp\graphics\gles\GLESVersion.cpp" />
     <ClCompile Include="cpp\graphics\gles\GLShaderSet.cpp" />
+    <ClCompile Include="cpp\graphics\gles\GLTexture.cpp" />
     <ClCompile Include="cpp\graphics\gles\GLVBO.cpp" />
     <ClCompile Include="cpp\graphics\Mesh2D.cpp" />
     <ClCompile Include="cpp\graphics\Mesh2DRenderer.cpp" />
     <ClCompile Include="cpp\input\InputManager.cpp" />
     <ClCompile Include="cpp\input\touch\TouchSensor.cpp" />
     <ClCompile Include="cpp\main.cpp" />
+    <ClCompile Include="cpp\util\basic\std_string_org.cpp" />
     <ClCompile Include="cpp\util\file\BinaryFile.cpp" />
     <ClCompile Include="cpp\util\file\ImageFile.cpp" />
     <ClCompile Include="cpp\util\file\stb_image.c" />

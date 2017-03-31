@@ -1,0 +1,21 @@
+用語定義
+Index…event構造体に格納されている配列のインデックス
+Id…ジェスチャーを行っている指を識別する番号。IndexをAMotionEvent_getPointerId()に突っ込むと得られる
+
+入力情報
+・AMOTION_DOWN
+・AMOTION_UP
+→指番号(Index),座標(x,y)
+・AMOTION_MOVE
+→すべての指の座標(x,y)
+
+処理方法
+・AMOTION_DOWN
+1.指番号取得
+2.
+
+出力情報
+・TouchSensor
+→TouchSensor上に指があるかどうか
+・MotionFinger(Queue only)
+→各指のタッチダウン、タッチアップ

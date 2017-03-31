@@ -2,6 +2,6 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <DebuggerFlavor>AndroidDebugger</DebuggerFlavor>
-    <AndroidDeviceID>169.254.138.177:5555;VS Emulator 7-inch KitKat (4.4) XHDPI Tablet</AndroidDeviceID>
+    <AndroidDeviceID>192.168.10.108:5555;android_x86</AndroidDeviceID>
   </PropertyGroup>
 </Project>

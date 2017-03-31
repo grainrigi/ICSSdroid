@@ -119,7 +119,10 @@
     </AntPackage>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Content Include="assets\libogg.so" />
+    <Content Include="assets\libvorbis.so" />
     <Content Include="assets\ninapri.png" />
+    <Content Include="assets\oggenc" />
     <Content Include="res\values\strings.xml" />
     <AntBuildXml Include="build.xml" />
     <AndroidManifest Include="AndroidManifest.xml" />

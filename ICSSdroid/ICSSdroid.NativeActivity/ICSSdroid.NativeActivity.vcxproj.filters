@@ -67,9 +67,6 @@
     <ClInclude Include="include\graphics\gles\GLShaderSet.h">
       <Filter>Headers\graphics\gles</Filter>
     </ClInclude>
-    <ClInclude Include="include\graphics\GLTexture.h">
-      <Filter>Headers\graphics\gles</Filter>
-    </ClInclude>
     <ClInclude Include="include\android\AssetManager.h">
       <Filter>Headers\android</Filter>
     </ClInclude>
@@ -97,10 +94,19 @@
     <ClInclude Include="include\graphics\gles\GLVBO.h">
       <Filter>Headers\graphics\gles</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\graphics\gles\GLExtention.h">
+    <ClInclude Include="include\graphics\Mesh2DRenderer.h">
+      <Filter>Headers\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\gles\GLExtention.h">
       <Filter>Headers\graphics\gles</Filter>
     </ClInclude>
-    <ClInclude Include="include\graphics\Mesh2DRenderer.h">
+    <ClInclude Include="include\graphics\gles\GLTexture.h">
+      <Filter>Headers\graphics\gles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\basic\std_string_org.h">
+      <Filter>Headers\util\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\BillBoard2D.h">
       <Filter>Headers\graphics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -153,6 +159,12 @@
     <ClCompile Include="include\graphics\DrawEnv.cpp" />
     <ClCompile Include="cpp\graphics\Mesh2DRenderer.cpp">
       <Filter>Sources\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\graphics\gles\GLTexture.cpp">
+      <Filter>Sources\graphics\gles</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\util\basic\std_string_org.cpp">
+      <Filter>Sources\util\basic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
