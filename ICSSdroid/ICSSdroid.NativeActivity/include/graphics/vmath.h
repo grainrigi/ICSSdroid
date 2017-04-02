@@ -128,7 +128,11 @@
 #include <string>
 #include <cassert>
 
+#ifdef _MSC_VER
+
 #pragma warning(disable: 4244)
+
+#endif
 
 #ifdef VMATH_NAMESPACE
 namespace VMATH_NAMESPACE

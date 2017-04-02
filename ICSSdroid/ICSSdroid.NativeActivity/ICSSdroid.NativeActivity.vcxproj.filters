@@ -179,6 +179,9 @@
     <ClCompile Include="cpp\wnd\BoundingBox.cpp">
       <Filter>Sources\wnd</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\util\basic\console_log.cpp">
+      <Filter>Sources\util\basic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\android\android_native_app_glue.h">
@@ -318,6 +321,9 @@
     </ClInclude>
     <ClInclude Include="include\wnd\BoundingBox.h">
       <Filter>Headers\wnd</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\basic\console_log.h">
+      <Filter>Headers\util\basic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

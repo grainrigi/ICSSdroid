@@ -100,10 +100,6 @@ void ICSS::graphics::MemCanvasRenderer::RenderAll(DrawEnv *env)
 
 void ICSS::graphics::MemCanvasRenderer::initShader(void)
 {
-	float dispWidth = 0.0f, dispHeight = 0.0f;
-	constexpr float txWidth = MemCanvasRenderTexturePool::textureWidth();
-	constexpr float txHeight = MemCanvasRenderTexturePool::textureHeight();
-
 	std::string vShader{
 		"uniform mat4 unif_disp;"
 		"attribute vec4 attr_pos; "

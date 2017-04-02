@@ -34,7 +34,7 @@ ICSS::graphics::MemCanvas::~MemCanvas(void)
 {
 	if(m_needDelete)
 	{
-		delete m_pixels;
+		delete[] m_pixels;
 		m_needDelete = false;
 	}
 }
@@ -76,7 +76,7 @@ void ICSS::graphics::MemCanvas::setPixels(void * pixels)
 {
 	if(m_needDelete)
 	{
-		delete m_pixels;
+		delete[] m_pixels;
 		m_needDelete = false;
 	}
 	m_pixels = reinterpret_cast<uint8_t*>(pixels);

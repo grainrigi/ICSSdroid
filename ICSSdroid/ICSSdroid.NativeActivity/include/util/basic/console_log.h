@@ -21,31 +21,24 @@ along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/preprocessor.hpp>
 #include <boost/filesystem/path.hpp>
+#include <iostream>
 
 namespace ICSE{
 namespace log{
-	static std::string removeCallRule(const std::string &str) {
-		auto ubpos = str.find("__");
-		auto sppos = str.find(' ', ubpos);
-		auto bpos = str.find('(');
-		if(ubpos != std::string::npos && sppos != std::string::npos && bpos != std::string::npos)
-			return str.substr(sppos + 1, bpos - sppos -1);
-		else
-			return str;
-	}
+	extern std::string removeCallRule(const std::string &str);
 
-	static void log_out(void)
-	{
-		std::cout << std::endl;
-	}
+	/*extern void log_out(void);
+	
 
 	template<typename First, typename... _Args>
 	static void log_out(const First &first, const _Args&... args)
 	{
 		std::cout << first;
 		log_out(args...);
-	}
+	}*/
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
 	static void except_msg(std::stringstream &msg) noexcept
 	{
 	}
@@ -65,6 +58,7 @@ namespace log{
 		res << exname << ": " << msg.str() << std::endl << "      at " << removeCallRule(funcname) << "(" << boost::filesystem::path(file).filename().string() << ":" << line << ")" << std::endl;
 		throw _Throwable(res.str().c_str());
 	}
+#pragma GCC diagnostic pop
 }
 }
 
@@ -76,4 +70,6 @@ namespace log{
 
 #ifdef _MSC_VER
 #define THROW(ex, ...) (ICSE::log::except_throw<ex>(#ex, __FILE__, __LINE__, __FUNCSIG__, __VA_ARGS__))
+#else
+#define THROW(ex, ...) (ICSE::log::except_throw<ex>(#ex, __FILE__, __LINE__, __func__, __VA_ARGS__))
 #endif

@@ -23,8 +23,8 @@ along with ICSEdit.  If not, see <http://www.gnu.org/licenses/>.
 using namespace ICSS::graphics;
 
 ICSS::graphics::MemCanvasRenderTexturePool::TextureUnit::TextureUnit(void)
-	: m_texture(true),
-	m_id(ObtainNewID())
+	: m_id(ObtainNewID()),
+	m_texture(true)
 {
 	memset(m_map, 0, sizeof(uint8_t) * BLOCK_HORZ_COUNT * BLOCK_VERT_COUNT);
 	m_texture.bind();

@@ -58,11 +58,11 @@ void GLTexture::init(void)
 
 bool ICSS::graphics::gles::GLTexture::uploadImage(const file::ImageFile & img)
 {
-	constexpr GLenum glChannelFormat[2]
+	/*constexpr GLenum glChannelFormat[2]
 	{
 		GL_RGB,
 		GL_RGBA,
-	};
+	};*/
 
 	if(img.getChannelCount() <= 2 || img.getChannelCount() > 5)
 		return false;

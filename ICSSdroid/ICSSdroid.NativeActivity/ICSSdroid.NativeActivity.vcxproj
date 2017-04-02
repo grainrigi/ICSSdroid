@@ -116,8 +116,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <IncludePath>$(BOOST);$(IncludePath)</IncludePath>
+    <LibraryPath>$(BOOST)\android\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <IncludePath>$(BOOST);$(IncludePath)</IncludePath>
+    <LibraryPath>$(BOOST)\android\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" />
@@ -154,7 +160,8 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
     </ClCompile>
     <Link>
-      <LibraryDependencies>%(LibraryDependencies);EGL;GLESv2;GLESv3;m;OpenSLES</LibraryDependencies>
+      <LibraryDependencies>%(LibraryDependencies);gnustl_static;stdc++;EGL;GLESv2;GLESv3;m;OpenSLES;boost_system;boost_filesystem</LibraryDependencies>
+      <AdditionalLibraryDirectories>$(BOOST)\android\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -167,7 +174,8 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
     </ClCompile>
     <Link>
-      <LibraryDependencies>%(LibraryDependencies);EGL;GLESv2;GLESv3;m;OpenSLES</LibraryDependencies>
+      <LibraryDependencies>%(LibraryDependencies);gnustl_static;stdc++;EGL;GLESv2;GLESv3;m;OpenSLES;boost_system;boost_filesystem</LibraryDependencies>
+      <AdditionalLibraryDirectories>$(BOOST)\android\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -252,6 +260,7 @@
     <ClInclude Include="include\input\touch\TouchNotifyParam.h" />
     <ClInclude Include="include\input\touch\TouchSensor.h" />
     <ClInclude Include="include\pch.h" />
+    <ClInclude Include="include\util\basic\console_log.h" />
     <ClInclude Include="include\util\basic\IDisposable.h" />
     <ClInclude Include="include\util\basic\Singleton.h" />
     <ClInclude Include="include\util\basic\std_string_org.h" />
@@ -290,6 +299,7 @@
     <ClCompile Include="cpp\input\InputManager.cpp" />
     <ClCompile Include="cpp\input\touch\TouchSensor.cpp" />
     <ClCompile Include="cpp\main.cpp" />
+    <ClCompile Include="cpp\util\basic\console_log.cpp" />
     <ClCompile Include="cpp\util\basic\std_string_org.cpp" />
     <ClCompile Include="cpp\util\file\BinaryFile.cpp" />
     <ClCompile Include="cpp\util\file\ImageFile.cpp" />
