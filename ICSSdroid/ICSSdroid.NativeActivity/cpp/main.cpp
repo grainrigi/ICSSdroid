@@ -152,9 +152,11 @@ private:
 			"varying mediump vec2 vary_uv;"
 			"precision mediump float;"
 			"void main(){"
-			"  gl_FragColor = texture2D(unif_texture, vary_uv);"
+			"  gl_FragColor = vec4((vary_uv.x + vary_uv.y) * 0.5, (vary_uv.x + vary_uv.y) * 0.5, (vary_uv.x + vary_uv.y) * 0.5, 1.0);"
 			"}"
 		};
+
+		LOGI("Creating Shader");
 
 		try {
 			shader_ = GLShaderSet::createFromString(vShader, fShader, 
@@ -175,9 +177,11 @@ private:
 			throw;
 		}
  
+		LOGI("Creating Texture");
 		//create texture
 		Asset texpng = AssetManagerSingleton::getInstance().loadAsset("ninapri.png");
 		ImageFile img = ImageFile::loadFromFile(texpng, ImageFile::FORMAT_RGBA);
+		LOGI("Image Loaded size:", img.getX(), ",", img.getY());
 		texture_.init();
 		texture_.uploadImage(img);
 		glEnable(GL_TEXTURE_2D);
@@ -185,6 +189,7 @@ private:
 		vertices[0] = vertices[3] = -(vertices[6] = vertices[9] = (float)538 / 2.0f);
 		vertices[4] = vertices[10] = -(vertices[1] = vertices[7] = (float)640 / 2.0f);
 
+		LOGI("Creating Mesh");
 		//create mesh
 		mesh_ = Mesh2D(4 ,Mesh2D::ATTR_POSITION | Mesh2D::ATTR_COORD, GL_STATIC_DRAW);
 		memcpy(&(*mesh_.positions())[0], vertices, sizeof(vertices));
@@ -193,15 +198,6 @@ private:
 
 		BillBoard2D bb;
 
-		GLuint fbo;
-		glGenFramebuffers(1, &fbo);
-
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-		glReadBuffer(GL_COLOR_ATTACHMENT0);
-		GLenum db = GL_BACK;
-		glDrawBuffers(1, &db);
-		glBlitFramebuffer(0, 0, 512, 512, 0, 0, 512, 512, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
 		return true;
 	}
@@ -237,7 +233,7 @@ private:
 		attr.attr_uv = 1;
 		attr.attr_color = -1;
 
-		mesh_.draw(ICSS::Singleton<Mesh2DRenderer>::getInstancePtr(), &env, shader_, attr);
+		Singleton<ICSS::graphics::Mesh2DRenderer>::getInstance().draw(&env, mesh_, shader_, attr);
 	}
 };
 
@@ -480,11 +476,12 @@ private:
 				if (app_->window) {
 					gl_.initWindow(app_->window);
 					Singleton<Mesh2DRenderer>::create();
+					Singleton<Mesh2DRenderer>::getInstance().LateInitialize();
 					gl_.presentFrame(app_->window);
 				}
 				
 				//Get Context Class descriptor
-				JNIEnv *env;
+				/*JNIEnv *env;
 				app_->activity->vm->AttachCurrentThread(&env, NULL);
 				jclass contextClass = env->FindClass("android/content/Context");
 				jmethodID getExternalFilesDirMethodId = env->GetMethodID(contextClass, "getExternalFilesDir", "(Ljava/lang/String;)Ljava/io/File;");
@@ -497,7 +494,7 @@ private:
 				std::string str(str1);
 				env->ReleaseStringUTFChars(stringObject, str1);
 
-				app_->activity->vm->DetachCurrentThread();
+				app_->activity->vm->DetachCurrentThread();*/
 				
 				break;
 			}
