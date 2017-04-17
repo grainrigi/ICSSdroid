@@ -54,6 +54,8 @@ void GLTexture::init(void)
 
 	this->setMagFilter(GL_NEAREST);
 	this->setMinFilter(GL_NEAREST);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 bool ICSS::graphics::gles::GLTexture::uploadImage(const file::ImageFile & img)
@@ -63,6 +65,8 @@ bool ICSS::graphics::gles::GLTexture::uploadImage(const file::ImageFile & img)
 		GL_RGB,
 		GL_RGBA,
 	};*/
+
+	this->bind();
 
 	if(img.getChannelCount() <= 2 || img.getChannelCount() > 5)
 		return false;
