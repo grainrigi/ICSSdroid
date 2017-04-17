@@ -102,9 +102,9 @@ void ICSS::graphics::MemCanvasRenderer::initShader(void)
 {
 	std::string vShader{
 		"uniform mat4 unif_disp;"
-		"attribute vec4 attr_pos; "
-		"attribute vec2 attr_uv;"
-		"varying vec2 vary_uv;"
+		"attribute mediump vec4 attr_pos; "
+		"attribute mediump vec2 attr_uv;"
+		"varying mediump vec2 vary_uv;"
 		"void main(){"
 		"  gl_Position = attr_pos * unif_disp + vec4(-1.0, 1.0, 0.0, 0.0);"
 		"  vary_uv = attr_uv;"
@@ -113,7 +113,7 @@ void ICSS::graphics::MemCanvasRenderer::initShader(void)
 
 	std::string fShader{
 		"uniform sampler2D unif_texture;"
-		"varying vec2 vary_uv;"
+		"varying mediump vec2 vary_uv;"
 		"void main(){"
 		"  gl_FragColor = clamp(texture2D(unif_texture, vary_uv), 0.0, 1.0);"
 		"}"

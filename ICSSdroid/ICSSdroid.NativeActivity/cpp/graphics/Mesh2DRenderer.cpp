@@ -132,9 +132,9 @@ void ICSS::graphics::Mesh2DRenderer::initShader(void)
 {
 	std::string vShader_tex{ 
 		//"#version 120\n"
-		"attribute vec4 attr_pos; "
-		"attribute vec2 attr_uv;"
-		"varying vec2 vary_uv;"
+		"attribute mediump vec4 attr_pos; "
+		"attribute mediump vec2 attr_uv;"
+		"varying mediump vec2 vary_uv;"
 		"void main(){"
 		"  gl_Position = attr_pos;"
 		"  vary_uv = attr_uv;"
@@ -142,23 +142,23 @@ void ICSS::graphics::Mesh2DRenderer::initShader(void)
 	std::string fShader_tex{
 		//"#version 120\n"
 		"uniform sampler2D unif_texture;"
-		"varying vec2 vary_uv;"
+		"varying mediump vec2 vary_uv;"
 		"void main(){"
 		"  gl_FragColor = texture2D(unif_texture, vary_uv);"
 		"}" };
 
 	std::string vShader_vc{
 		//"#version 120\n"
-		"attribute vec4 attr_pos; "
-		"attribute vec4 attr_color;"
-		"varying vec4 vary_color;"
+		"attribute mediump vec4 attr_pos; "
+		"attribute mediump vec4 attr_color;"
+		"varying mediump vec4 vary_color;"
 		"void main(){"
 		"  gl_Position = attr_pos;"
 		"  vary_color = attr_color;"
 		"}" };
 	std::string fShader_vc{
 		//"#version 120\n"
-		"varying vec4 vary_color;"
+		"varying mediump vec4 vary_color;"
 		"void main(){"
 		"  gl_FragColor = vary_color;"
 		"}" };
