@@ -55,7 +55,7 @@ namespace log{
 	{
 		std::stringstream res, msg;
 		except_msg(msg, args...);
-		res << exname << ": " << msg.str() << std::endl << "      at " << removeCallRule(funcname) << "(" << boost::filesystem::path(file).filename().string() << ":" << line << ")" << std::endl;
+		res << exname << ": " << msg.str() << std::endl << "      at " << removeCallRule(funcname) << "(" << /*boost::filesystem::path(file).filename().string()*/ file << ":" << line << ")" << std::endl;
 		throw _Throwable(res.str().c_str());
 	}
 #pragma GCC diagnostic pop
