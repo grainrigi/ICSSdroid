@@ -69,6 +69,11 @@ void ICSS::graphics::Mesh2DRenderer::draw(DrawEnv * env, Mesh2D & mesh)
 	}
 	else
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, mesh.vertCount());
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void ICSS::graphics::Mesh2DRenderer::draw(DrawEnv * env, Mesh2D & mesh, const gles::GLShaderSet & shader, const Mesh2D::ShaderAttributes & attr)
@@ -143,6 +148,7 @@ void ICSS::graphics::Mesh2DRenderer::initShader(void)
 		//"#version 120\n"
 		"uniform sampler2D unif_texture;"
 		"varying mediump vec2 vary_uv;"
+		"precision mediump float;"
 		"void main(){"
 		"  gl_FragColor = texture2D(unif_texture, vary_uv);"
 		"}" };
@@ -159,6 +165,7 @@ void ICSS::graphics::Mesh2DRenderer::initShader(void)
 	std::string fShader_vc{
 		//"#version 120\n"
 		"varying mediump vec4 vary_color;"
+		"precision mediump float;"
 		"void main(){"
 		"  gl_FragColor = vary_color;"
 		"}" };
@@ -170,6 +177,7 @@ void ICSS::graphics::Mesh2DRenderer::initShader(void)
 			{ 0, "attr_pos" },
 			{ 1, "attr_uv" }
 		});
+	m_shader_tex.use();
 	glUniform1i(glGetUniformLocation(m_shader_tex.program(), "unif_texture"), 0);
 
 	m_shader_vc = GLShaderSet::createFromString(
