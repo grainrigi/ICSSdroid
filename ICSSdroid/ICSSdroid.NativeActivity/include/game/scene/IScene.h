@@ -1,4 +1,4 @@
-/*
+/* 
 (c) 2016,2017 Grain
 
 This file is part of ICSSdroid.
@@ -19,24 +19,25 @@ along with ICSSdroid.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-namespace ICSS{
-namespace game{
-namespace scene{
+namespace ICSS {
+namespace game {
+namespace scene {
 
-	class IScene;
-
-	class SceneManager
-	{
+	class IScene {
+		
 	public:
-		SceneManager(void);
+		IScene(void);
 
-		void ChangeScene(IScene *scene);
+		void Initialize(void);
+
+		void Awake(void);
+
+		void Update(void);
+		
 	private:
-		IScene* m_prevscene;
-		IScene* m_scene;
+		
 	};
 
 }
 }
 }
-

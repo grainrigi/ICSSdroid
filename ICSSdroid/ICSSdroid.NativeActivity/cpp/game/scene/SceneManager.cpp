@@ -17,26 +17,7 @@ You should have received a copy of the GNU General Public License
 along with ICSSdroid.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "game/scene/SceneManager.h"
 
-namespace ICSS{
-namespace game{
-namespace scene{
-
-	class IScene;
-
-	class SceneManager
-	{
-	public:
-		SceneManager(void);
-
-		void ChangeScene(IScene *scene);
-	private:
-		IScene* m_prevscene;
-		IScene* m_scene;
-	};
-
-}
-}
-}
+using namespace ICSS::game::scene;
 
