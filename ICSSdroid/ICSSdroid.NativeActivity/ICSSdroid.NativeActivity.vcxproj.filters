@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Headers">
@@ -182,6 +182,9 @@
     <ClCompile Include="cpp\util\basic\console_log.cpp">
       <Filter>Sources\util\basic</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\graphics\AtlasRenderer.cpp" >
+      <Filter>Sources\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\android\android_native_app_glue.h">
@@ -324,6 +327,9 @@
     </ClInclude>
     <ClInclude Include="include\util\basic\console_log.h">
       <Filter>Headers\util\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\AtlasRenderer.h" >
+      <Filter>Headers\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

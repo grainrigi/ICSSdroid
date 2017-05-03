@@ -11,7 +11,9 @@
 #include "graphics/gles/GLTexture.h"
 #include "graphics/Mesh2D.h"
 #include "graphics/Mesh2DRenderer.h"
+#include "graphics/AtlasRenderer.h"
 #include "graphics/BillBoard2D.h"
+#include "graphics/AtlasRenderer.h"
 #include "util/threading/Thread.h"
 #include "input/InputManager.h"
 #include "util/threading/LockFreeQueue8.h"
@@ -29,6 +31,7 @@ using ICSS::graphics::Mesh2D;
 using ICSS::graphics::Mesh2DRenderer;
 using ICSS::graphics::BillBoard2D;
 using ICSS::graphics::DrawEnv;
+using ICSS::graphics::AtlasRenderer;
 using ICSS::input::InputManager;
 using ICSS::input::touch::TouchNotifyParam;
 using ICSS::input::touch::TouchSensor;
@@ -96,6 +99,7 @@ class ThisAppGraphics : public GLEnvironment
 	GLShaderSet shader_;
 	DrawEnv env_;
 	Mesh2D mesh_;
+	int atlasid_;
 
 public:
 	ThisAppGraphics()
@@ -106,6 +110,10 @@ private:
 	virtual bool loadResources() override
 	{
 		LOGI("loadResources");
+
+
+		/*Atlas Renderer test*/
+
 
 		GLfloat vertices[]{
 			-300.0f, 300.0f, 0.0f,
@@ -190,6 +198,13 @@ private:
 		vertices[4] = vertices[10] = -(vertices[1] = vertices[7] = (float)640 / 2.0f);
 
 		LOGI("Creating Mesh");
+		ICSS::Singleton<AtlasRenderer>::create();
+		auto arend = ICSS::Singleton<AtlasRenderer>::getInstancePtr();
+		arend->atlasCapacity(100);
+		atlasid_ = arend->addAtlas(1.0f);
+		arend->updatePosition(atlasid_, 0.0f, 0.0f, 1.0f, 1.0f);
+		arend->updateCoordinate(atlasid_, 0.0f, 0.0f, 1.0f, 1.0f);
+		
 		//create mesh
 		mesh_ = Mesh2D(4 ,Mesh2D::ATTR_POSITION | Mesh2D::ATTR_COORD, GL_STATIC_DRAW);
 		memcpy(&(*mesh_.positions())[0], vertices, sizeof(vertices));
@@ -225,7 +240,7 @@ private:
 		glClearColor(0, 1, 1, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		texture_.bind();
+		/*texture_.bind();
 		env.setShader(shader_);
 		glUniform1f(unif_phase_, phase);
 
@@ -233,7 +248,10 @@ private:
 		attr.attr_uv = 1;
 		attr.attr_color = -1;
 
-		Singleton<ICSS::graphics::Mesh2DRenderer>::getInstance().draw(&env, mesh_, shader_, attr);
+		//Singleton<ICSS::graphics::Mesh2DRenderer>::getInstance().draw(&env, mesh_, shader_, attr);
+		*/
+		Singleton<AtlasRenderer>::getInstance().updatePosition(atlasid_, std::sin(phase) * 0.5, std::cos(phase) * 0.5, std::sin(phase), std::cos(phase));
+		Singleton<AtlasRenderer>::getInstance().drawAll(2.0f, 2.0f);
 	}
 };
 
