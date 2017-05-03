@@ -19,8 +19,7 @@ along with ICSSdroid.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include <boost/preprocessor.hpp>
-#include <boost/filesystem/path.hpp>
+
 #include <iostream>
 
 namespace ICSE{
