@@ -26,13 +26,15 @@ namespace scene {
 	class IScene {
 		
 	public:
-		IScene(void);
+		IScene(void) {};
 
-		void Initialize(void);
+		virtual void Initialize(void) = 0;
 
-		void Awake(void);
+		virtual void Awake(void) = 0;
 
-		void Update(void);
+		virtual void Update(void) = 0;
+
+		virtual void Terminate(void) = 0;
 		
 	private:
 		
